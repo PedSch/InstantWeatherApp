@@ -25,8 +25,11 @@ const TRANSLATIONS = {
     day: 'Day',
     night: 'Night',
     wind: 'Wind',
+    removed: 'Removed',
     not_found: 'City not found',
     error_fetch: 'Failed to fetch weather',
+    fun_fact: 'Fun Fact',
+    no_fact: 'No fun fact found for this location.',
   },
   es: {
     title: 'Tiempo Instantáneo',
@@ -42,8 +45,11 @@ const TRANSLATIONS = {
     day: 'Día',
     night: 'Noche',
     wind: 'Viento',
+    removed: 'Eliminado',
     not_found: 'Ciudad no encontrada',
     error_fetch: 'Error al obtener el clima',
+    fun_fact: 'Dato curioso',
+    no_fact: 'No se encontró un dato curioso para este lugar.',
   },
   ca: {
     title: 'Temps Instantani',
@@ -59,8 +65,11 @@ const TRANSLATIONS = {
     day: 'Dia',
     night: 'Nit',
     wind: 'Vent',
+    removed: 'Eliminat',
     not_found: 'Ciutat no trobada',
     error_fetch: 'Error en obtenir el temps',
+    fun_fact: 'Curiositat',
+    no_fact: 'No s’ha trobat cap curiositat per aquest lloc.',
   },
   pt: {
     title: 'Clima Instantâneo',
@@ -76,8 +85,11 @@ const TRANSLATIONS = {
     day: 'Dia',
     night: 'Noite',
     wind: 'Vento',
+    removed: 'Removido',
     not_found: 'Cidade não encontrada',
     error_fetch: 'Falha ao obter o clima',
+    fun_fact: 'Curiosidade',
+    no_fact: 'Nenhuma curiosidade encontrada para este local.',
   }
 }
 

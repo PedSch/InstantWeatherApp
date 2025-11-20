@@ -21,6 +21,7 @@ import DailyForecast from './components/DailyForecast'
 import UnitToggle from './components/UnitToggle'
 import { I18nProvider, useTranslation } from './i18n.jsx'
 import { fetchFunFact } from './funFact.js'
+import { fetchTrivia } from './trivia.js'
 import LanguageToggle from './components/LanguageToggle'
 import ThemeToggle from './components/ThemeToggle'
 import SavedLocations from './components/SavedLocations'
@@ -58,6 +59,8 @@ function AppContent() {
   })
   const [toast, setToast] = useState(null)
   const [funFact, setFunFact] = useState(null)
+  const [trivia, setTrivia] = useState(null)
+  const [showAnswer, setShowAnswer] = useState(false)
   const [showGeoPrompt, setShowGeoPrompt] = useState(false)
 
   useEffect(() => {
@@ -361,6 +364,34 @@ function AppContent() {
                     <div className="mt-4 p-4 rounded-lg bg-white/70 shadow text-slate-700">
                       <div className="font-semibold mb-1">{t('fun_fact')}</div>
                       <div className="text-sm">{funFact ? funFact : t('no_fact')}</div>
+                    </div>
+                    {/* Trivia panel */}
+                    <div className="mt-4 p-4 rounded-lg bg-white/70 shadow text-slate-700">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="font-semibold">Trivia</div>
+                        <div className="text-xs text-slate-500">{trivia && `${trivia.category} • ${trivia.difficulty}`}</div>
+                      </div>
+                      {trivia ? (
+                        <div>
+                          <div className="text-sm mb-2">{trivia.question}</div>
+                          <div className="flex flex-col gap-2">
+                            {trivia.choices.map((c, i) => (
+                              <button key={i} className={`text-left px-3 py-2 rounded ${showAnswer && c === trivia.correct ? 'bg-emerald-100' : 'bg-white/60'}`} onClick={() => setShowAnswer(true)}>
+                                {c}
+                              </button>
+                            ))}
+                          </div>
+                          {showAnswer && (
+                            <div className="mt-2 text-sm text-slate-700">Answer: <strong>{trivia.correct}</strong></div>
+                          )}
+                          <div className="mt-3 flex gap-2">
+                            <button className="px-3 py-1 rounded bg-sky-600 text-white text-sm" onClick={() => { setTrivia(null); setShowAnswer(false); }}>New</button>
+                            <ShareButton text={trivia.question + ' — Answer: ' + trivia.correct} />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-sm">No trivia loaded. <button className="underline" onClick={async () => { const t = await fetchTrivia(); if (t) setTrivia(t); }}>Load a trivia question</button></div>
+                      )}
                     </div>
                   </div>
                 ) : (

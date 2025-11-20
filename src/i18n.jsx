@@ -52,6 +52,14 @@ const TRANSLATIONS = {
     notification_permission_denied: 'Notifications blocked — enable them in Settings',
     notification_not_supported: 'Notifications not supported in this browser',
     notification_send_failed: 'Failed to send notification'
+    ,
+    request_notifications: 'Request Notifications',
+    request_notifications_granted: 'Notifications enabled',
+    request_notifications_denied: 'Notifications blocked — enable them in Settings',
+    request_notifications_default: 'Notification permission dismissed',
+    ios_notifications_hint_title: 'iOS Notifications',
+    ios_notifications_hint_body: 'To receive notifications on iOS, add this site to your Home Screen or use the native app.',
+    ios_notifications_hint_cta: 'Learn how'
   },
   es: {
     title: 'ACTIVO Weather',
@@ -100,7 +108,14 @@ const TRANSLATIONS = {
     share_unavailable: 'Compartir no soportado',
     share_failed: 'No se pudo compartir',
     share_canceled: 'Compartir cancelado',
-    geo_denied: 'Geolocalización denegada o fallida'
+    geo_denied: 'Geolocalización denegada o fallida',
+    request_notifications: 'Solicitar notificaciones',
+    request_notifications_granted: 'Notificaciones habilitadas',
+    request_notifications_denied: 'Notificaciones bloqueadas — habilítalas en Configuración',
+    request_notifications_default: 'Permiso de notificación descartado',
+    ios_notifications_hint_title: 'Notificaciones en iOS',
+    ios_notifications_hint_body: 'Para recibir notificaciones en iOS, añade este sitio a la pantalla de inicio o usa la app nativa.',
+    ios_notifications_hint_cta: 'Cómo hacerlo'
   },
   ca: {
     title: 'ACTIVO Weather',
@@ -144,19 +159,19 @@ const TRANSLATIONS = {
     notification_not_supported: 'Les notificacions no són compatibles amb aquest navegador',
     notification_send_failed: 'Error en enviar la notificació'
     ,
-    copied_clipboard: 'Copiado al portapapeles',
-    copy_failed: 'No se pudo copiar',
-    share_unavailable: 'Compartir no soportado',
-    share_failed: 'No se pudo compartir',
-    share_canceled: 'Compartir cancelado',
-    geo_denied: 'Geolocalización denegada o fallida'
-    ,
     copied_clipboard: 'Copiat al porta-retalls',
     copy_failed: 'No s’ha pogut copiar',
     share_unavailable: 'Compartir no compatible',
     share_failed: 'No s’ha pogut compartir',
     share_canceled: 'Compartir cancel·lat',
-    geo_denied: 'Geolocalització denegada o fallida'
+    geo_denied: 'Geolocalització denegada o fallida',
+    request_notifications: 'Sol·licitar notificacions',
+    request_notifications_granted: 'Notificacions habilitades',
+    request_notifications_denied: 'Notificacions bloquejades — activa-les a la configuració',
+    request_notifications_default: 'Permís de notificació descartat',
+    ios_notifications_hint_title: 'Notificacions iOS',
+    ios_notifications_hint_body: 'Per rebre notificacions a iOS, afegeix aquest lloc a la pantalla d’inici o utilitza l’aplicació nativa.',
+    ios_notifications_hint_cta: 'Com fer-ho'
   },
   pt: {
     title: 'ACTIVO Weather',
@@ -205,7 +220,14 @@ const TRANSLATIONS = {
     share_unavailable: 'Compartilhar não suportado',
     share_failed: 'Não foi possível compartilhar',
     share_canceled: 'Compartilhar cancelado',
-    geo_denied: 'Geolocalização negada ou falhou'
+    geo_denied: 'Geolocalização negada ou falhou',
+    request_notifications: 'Solicitar notificações',
+    request_notifications_granted: 'Notificações habilitadas',
+    request_notifications_denied: 'Notificações bloqueadas — habilite nas Configurações',
+    request_notifications_default: 'Permissão de notificação descartada',
+    ios_notifications_hint_title: 'Notificações iOS',
+    ios_notifications_hint_body: 'Para receber notificações no iOS, adicione este site à tela de início ou use o app nativo.',
+    ios_notifications_hint_cta: 'Como fazer'
   }
 }
 

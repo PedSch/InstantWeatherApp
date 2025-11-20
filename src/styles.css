@@ -18,6 +18,14 @@ html, body, #root {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Respect iOS safe-area insets for notches and home indicators */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 /* Gentle, modern background gradient */
 body {
   background: radial-gradient(1000px 500px at 10% 10%, #eaf8ff 0%, transparent 15%), linear-gradient(180deg,var(--bg-1) 0%, var(--bg-2) 100%);
@@ -25,6 +33,9 @@ body {
 }
 
 .app-container { max-width: 1060px; margin-left:auto; margin-right:auto; }
+
+/* Make the main app container use full width on very small screens */
+.app-responsive { padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
 
 /* Cards */
 .card {
@@ -57,6 +68,8 @@ body {
   transform: translateX(100%) scale(.995);
   transition: transform 320ms cubic-bezier(.22,.9,.3,1);
   box-shadow: -8px 0 28px rgba(2,6,23,0.14);
+  /* Use viewport-relative width to fit on small phones */
+  width: min(92vw, 360px);
 }
 .drawer-panel.open {
   transform: translateX(0) scale(1);
@@ -112,5 +125,11 @@ body {
   header.header-blur { padding-left: 12px; padding-right: 12px }
   .footer-blur { padding-left: 8px; padding-right: 8px; font-size: 11px }
   .card .p-6 { padding: 12px }
+}
+
+/* Ensure large phones like iPhone 15 scale well: cap content width and ensure padding */
+@media (max-width: 430px) {
+  .max-w-6xl { max-width: 92vw }
+  .w-72 { width: auto }
 }
 

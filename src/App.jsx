@@ -27,6 +27,8 @@ import FocusTrap from 'focus-trap-react'
 import LanguageToggle from './components/LanguageToggle'
 import ThemeToggle from './components/ThemeToggle'
 import SavedLocations from './components/SavedLocations'
+import IosNotificationHint from './components/IosNotificationHint'
+import requestNotifications from './requestNotifications'
 
 // Open-Meteo endpoints
 const GEOCODE_BASE = 'https://geocoding-api.open-meteo.com/v1/search'
@@ -342,6 +344,15 @@ function AppContent() {
     }
   }
 
+  async function handleRequestNotifications() {
+    try {
+      const res = await requestNotifications({ push, t })
+      return res
+    } catch (e) {
+      // ignore
+    }
+  }
+
 
   return (
     <React.Fragment>
@@ -416,6 +427,7 @@ function AppContent() {
                     <div className="flex items-center justify-end gap-2 mb-2 flex-wrap">
                       <button onClick={() => saveLocation(weather.name)} className="px-3 py-1 rounded bg-sky-600 text-white text-sm shadow">{t('save_location')}</button>
                       <button onClick={() => notifyWeather()} className="px-3 py-1 rounded bg-emerald-600 text-white text-sm shadow">{t('notify')}</button>
+                      <button onClick={() => handleRequestNotifications()} className="px-3 py-1 rounded bg-amber-500 text-white text-sm shadow">{t('request_notifications')}</button>
                       <ShareButton text={`${weather.name}, ${weather.country}: ${Math.round(weather.temp)}°${unit}. ${funFact ? funFact : ''}`}/>
                     </div>
                     <WeatherCard data={weather} unit={unit} />
@@ -424,6 +436,7 @@ function AppContent() {
                       <div className="font-semibold mb-1">{t('fun_fact')}</div>
                       <div className="text-sm">{funFact ? funFact : t('no_fact')}</div>
                     </div>
+                    <IosNotificationHint show={typeof window !== 'undefined' && (typeof Notification === 'undefined' || Notification.permission === 'denied')} />
                     {/* Trivia panel */}
                     <div className="mt-4 p-4 rounded-lg bg-white/70 shadow text-slate-700">
                         <div className="flex items-center justify-between mb-2">

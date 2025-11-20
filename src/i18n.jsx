@@ -45,6 +45,13 @@ const TRANSLATIONS = {
     welcome_subtitle: 'Search for any city or select a saved location to see weather, fun facts, and more.',
     notify: 'Notify',
     share: 'Share'
+    ,
+    notification_scheduled_native: 'Notification scheduled (native)',
+    notification_sent_web: 'Notification sent (web)',
+    notification_unavailable: 'Unable to send notification',
+    notification_permission_denied: 'Notifications blocked — enable them in Settings',
+    notification_not_supported: 'Notifications not supported in this browser',
+    notification_send_failed: 'Failed to send notification'
   },
   es: {
     title: 'ACTIVO Weather',
@@ -80,6 +87,20 @@ const TRANSLATIONS = {
     welcome_subtitle: 'Busca cualquier ciudad o selecciona una ubicación guardada para ver el clima, datos curiosos y más.',
     notify: 'Notificar',
     share: 'Compartir'
+    ,
+    notification_scheduled_native: 'Notificación programada (nativa)',
+    notification_sent_web: 'Notificación enviada (web)',
+    notification_unavailable: 'No se pudo enviar la notificación',
+    notification_permission_denied: 'Notificaciones bloqueadas — habilítalas en Configuración',
+    notification_not_supported: 'Notificaciones no compatibles en este navegador',
+    notification_send_failed: 'Error al enviar la notificación'
+    ,
+    copied_clipboard: 'Copiado al portapapeles',
+    copy_failed: 'No se pudo copiar',
+    share_unavailable: 'Compartir no soportado',
+    share_failed: 'No se pudo compartir',
+    share_canceled: 'Compartir cancelado',
+    geo_denied: 'Geolocalización denegada o fallida'
   },
   ca: {
     title: 'ACTIVO Weather',
@@ -115,6 +136,27 @@ const TRANSLATIONS = {
     welcome_subtitle: 'Cerca qualsevol ciutat o selecciona una ubicació desada per veure el temps, curiositats i més.',
     notify: 'Notificar',
     share: 'Comparteix'
+    ,
+    notification_scheduled_native: 'Notificació programada (nativa)',
+    notification_sent_web: 'Notificació enviada (web)',
+    notification_unavailable: 'No s’ha pogut enviar la notificació',
+    notification_permission_denied: 'Notificacions bloquejades — activa-les a la configuració',
+    notification_not_supported: 'Les notificacions no són compatibles amb aquest navegador',
+    notification_send_failed: 'Error en enviar la notificació'
+    ,
+    copied_clipboard: 'Copiado al portapapeles',
+    copy_failed: 'No se pudo copiar',
+    share_unavailable: 'Compartir no soportado',
+    share_failed: 'No se pudo compartir',
+    share_canceled: 'Compartir cancelado',
+    geo_denied: 'Geolocalización denegada o fallida'
+    ,
+    copied_clipboard: 'Copiat al porta-retalls',
+    copy_failed: 'No s’ha pogut copiar',
+    share_unavailable: 'Compartir no compatible',
+    share_failed: 'No s’ha pogut compartir',
+    share_canceled: 'Compartir cancel·lat',
+    geo_denied: 'Geolocalització denegada o fallida'
   },
   pt: {
     title: 'ACTIVO Weather',
@@ -150,6 +192,20 @@ const TRANSLATIONS = {
     welcome_subtitle: 'Pesquise qualquer cidade ou selecione um local salvo para ver o clima, curiosidades e mais.',
     notify: 'Notificar',
     share: 'Compartilhar'
+    ,
+    notification_scheduled_native: 'Notificação agendada (nativa)',
+    notification_sent_web: 'Notificação enviada (web)',
+    notification_unavailable: 'Não foi possível enviar a notificação',
+    notification_permission_denied: 'Notificações bloqueadas — habilite nas Configurações',
+    notification_not_supported: 'Notificações não suportadas neste navegador',
+    notification_send_failed: 'Falha ao enviar notificação'
+    ,
+    copied_clipboard: 'Copiado para a área de transferência',
+    copy_failed: 'Falha ao copiar',
+    share_unavailable: 'Compartilhar não suportado',
+    share_failed: 'Não foi possível compartilhar',
+    share_canceled: 'Compartilhar cancelado',
+    geo_denied: 'Geolocalização negada ou falhou'
   }
 }
 

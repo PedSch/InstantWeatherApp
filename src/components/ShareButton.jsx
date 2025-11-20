@@ -1,18 +1,14 @@
 import React from 'react'
+import { useToast } from '../ToastContext'
+import { useTranslation } from '../i18n.jsx'
+import { shareText } from '../shareHelper'
 
 export default function ShareButton({ text }) {
-  function handleShare() {
-    if (navigator.share) {
-      navigator.share({
-        title: 'Weather & Fun Fact',
-        text,
-        url: window.location.href
-      })
-    } else {
-      // fallback: copy to clipboard
-      navigator.clipboard.writeText(text)
-      alert('Copied to clipboard!')
-    }
+  const { push } = useToast()
+  const { t } = useTranslation()
+
+  async function handleShare() {
+    await shareText({ text, push, t })
   }
   return (
     <button

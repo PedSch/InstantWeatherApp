@@ -20,6 +20,7 @@ import HourlyForecast from './components/HourlyForecast'
 import DailyForecast from './components/DailyForecast'
 import UnitToggle from './components/UnitToggle'
 import { I18nProvider, useTranslation } from './i18n.jsx'
+import { ToastProvider, useToast } from './ToastContext'
 import { fetchFunFact } from './funFact.js'
 import { fetchTrivia } from './trivia.js'
 import FocusTrap from 'focus-trap-react'
@@ -37,6 +38,7 @@ function InnerApp() {
 
 function AppContent() {
   const { t } = useTranslation()
+  const { push } = useToast()
   // `weather` stores a small normalized object for the UI
   const [weather, setWeather] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -58,7 +60,8 @@ function AppContent() {
       return []
     }
   })
-  const [toast, setToast] = useState(null)
+  // toasts are provided via ToastContext
+  // const [toast, setToast] = useState(null)
   const [funFact, setFunFact] = useState(null)
   const [trivia, setTrivia] = useState(null)
   const [showAnswer, setShowAnswer] = useState(false)
@@ -241,8 +244,7 @@ function AppContent() {
           fetchForecastByCoords(latitude, longitude, 'Your Location', '')
         },
         (err) => {
-          setToast('Geolocation denied or failed')
-          setTimeout(() => setToast(null), 2500)
+          push(t('geo_denied'))
         },
         { maximumAge: 1000 * 60 * 5 }
       )
@@ -265,8 +267,7 @@ function AppContent() {
       const dedup = [entry, ...saved.filter(s => s.name !== entry.name)]
       setSaved(dedup)
       localStorage.setItem('saved_locations', JSON.stringify(dedup))
-      setToast(`${t('save_location')}: ${entry.name}`)
-      setTimeout(() => setToast(null), 3000)
+      push(`${t('save_location')}: ${entry.name}`)
     } catch (e) {}
   }
 
@@ -275,8 +276,7 @@ function AppContent() {
       const next = saved.filter(s => s.name !== name)
       setSaved(next)
       localStorage.setItem('saved_locations', JSON.stringify(next))
-      setToast(`${t('removed')}: ${name}`)
-      setTimeout(() => setToast(null), 3000)
+      push(`${t('removed')}: ${name}`)
     } catch (e) {}
   }
 
@@ -333,18 +333,10 @@ function AppContent() {
 
   // Notify current weather via native/local notifications or Web Notification
   async function notifyWeather() {
+    // delegate to notify helper for mapping and push
     try {
-      if (!weather) return
-      const title = `${weather.name}`
-      const cond = `${Math.round(weather.temp)}°${unit} • ${weather.is_day ? t('day') : t('night')}`
-      // dynamic import of native helper
-      const mod = await import('./native.js')
-      const res = await mod.scheduleLocalNotification({ title: `Weather — ${title}`, body: cond })
-      // show small toast to indicate the platform used
-      if (res.platform === 'capacitor') setToast('Notification scheduled (native)')
-      else if (res.platform === 'web') setToast('Notification sent (web)')
-      else setToast('Unable to send notification')
-      setTimeout(() => setToast(null), 2000)
+      const { default: notifyWeatherHelper } = await import('./notifyHelper')
+      await notifyWeatherHelper({ weather, unit, t, push })
     } catch (e) {
       // ignore
     }
@@ -502,9 +494,7 @@ function AppContent() {
 
         </div>
 
-        {toast && (
-          <div className="fixed left-6 bottom-6 bg-slate-800 text-white px-4 py-2 rounded shadow-lg">{toast}</div>
-        )}
+        {/* Toasts are rendered by ToastProvider/ToastContainer */}
 
         {/* Mobile saved locations drawer */}
         {showSavedDrawer && (
@@ -539,7 +529,9 @@ function AppContent() {
 export default function App() {
   return (
     <I18nProvider>
-      <InnerApp />
+      <ToastProvider>
+        <InnerApp />
+      </ToastProvider>
     </I18nProvider>
   )
 }

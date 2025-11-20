@@ -16,16 +16,24 @@ export async function scheduleLocalNotification({ id = 1, title = '', body = '',
 
   // Web Notifications fallback
   try {
-    if (typeof Notification !== 'undefined') {
-      if (Notification.permission === 'default') {
-        await Notification.requestPermission()
-      }
-      if (Notification.permission === 'granted') {
+    if (typeof Notification === 'undefined') {
+      return { platform: 'none', reason: 'not-supported' }
+    }
+    if (Notification.permission === 'default') {
+      const p = await Notification.requestPermission()
+      if (p !== 'granted') return { platform: 'none', reason: p === 'denied' ? 'permission-denied' : 'permission-default' }
+    }
+    if (Notification.permission === 'granted') {
+      try {
         new Notification(title, { body })
         return { platform: 'web' }
+      } catch (err) {
+        // Could fail if browser blocks notifications in this context
+        return { platform: 'none', reason: 'send-failed' }
       }
     }
-  } catch (e) {}
-
-  return { platform: 'none' }
+    return { platform: 'none', reason: 'permission-denied' }
+  } catch (e) {
+    return { platform: 'none', reason: 'error' }
+  }
 }

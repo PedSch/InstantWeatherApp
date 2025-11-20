@@ -9,6 +9,17 @@
   --card: rgba(255,255,255,0.7);
   --muted: #6b7280;
   --glass: rgba(255,255,255,0.6);
+  /* Design tokens (CSS variables) for spacing and typography */
+  --space-xs: 6px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+
+  --font-base: 16px;
+  --font-lg: 20px;
 }
 
 html, body, #root {
@@ -40,8 +51,8 @@ body {
 /* Cards */
 .card {
   background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.55));
-  border-radius: 14px;
-  padding: 16px;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
   box-shadow: 0 8px 30px rgba(2,6,23,0.08);
 }
 

@@ -21,6 +21,7 @@ import DailyForecast from './components/DailyForecast'
 import UnitToggle from './components/UnitToggle'
 import { I18nProvider, useTranslation } from './i18n.jsx'
 import { ToastProvider, useToast } from './ToastContext'
+import ThemeProvider from './theme/ThemeProvider'
 import { fetchFunFact } from './funFact.js'
 import { fetchTrivia } from './trivia.js'
 import FocusTrap from 'focus-trap-react'
@@ -29,6 +30,8 @@ import ThemeToggle from './components/ThemeToggle'
 import SavedLocations from './components/SavedLocations'
 import IosNotificationHint from './components/IosNotificationHint'
 import requestNotifications from './requestNotifications'
+import Container from './components/ui/Container'
+import Card from './components/ui/Card'
 
 // Open-Meteo endpoints
 const GEOCODE_BASE = 'https://geocoding-api.open-meteo.com/v1/search'
@@ -356,15 +359,19 @@ function AppContent() {
 
   return (
     <React.Fragment>
-      <header ref={headerRef} className={`header-blur fixed top-0 left-0 w-full z-10 py-3 px-6 flex items-center justify-between ${headerDimmed ? 'header-dim' : ''}`}>
-        <span className="font-bold text-xl tracking-tight">{t('title')}</span>
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <LanguageToggle />
-        </div>
+      <header ref={headerRef} className={`header-blur fixed top-0 left-0 w-full z-10 py-3 ${headerDimmed ? 'header-dim' : ''}`}>
+        <Container className="flex items-center justify-between">
+          <span className="font-bold text-xl tracking-tight">{t('title')}</span>
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <LanguageToggle />
+          </div>
+        </Container>
       </header>
-      <div className="min-h-screen bg-slate-50 flex items-start justify-center p-4 pt-20">
-        <div className="w-full max-w-6xl flex gap-6 flex-col md:flex-row">
+
+      <div className="min-h-screen bg-slate-50 p-4 pt-20">
+        <Container>
+          <div className="w-full max-w-6xl mx-auto flex gap-6 flex-col md:flex-row">
           {/* Left sidebar with saved locations */}
           <aside className="hidden md:block w-72">
             <div className="card glass mb-4">
@@ -400,7 +407,7 @@ function AppContent() {
 
           {/* Main content */}
           <main className="flex-1 max-w-3xl">
-            <div className="card glass p-6">
+            <Card className="glass p-6">
               <div className="flex items-center justify-between mb-4">
                 <h1 className="text-2xl font-semibold">{t('title')}</h1>
                 <div className="flex items-center gap-3">
@@ -502,14 +509,12 @@ function AppContent() {
                   </div>
                 )}
               </div>
-            </div>
+            </Card>
           </main>
 
-        </div>
+          {/* Toasts are rendered by ToastProvider/ToastContainer */}
 
-        {/* Toasts are rendered by ToastProvider/ToastContainer */}
-
-        {/* Mobile saved locations drawer */}
+          {/* Mobile saved locations drawer */}
         {showSavedDrawer && (
           <div className="fixed inset-0 z-50">
             <div className={`fixed inset-0 backdrop-fade ${drawerOpen ? 'open' : ''}`} onClick={() => { setDrawerOpen(false); setTimeout(() => setShowSavedDrawer(false), 320) }} />
@@ -531,6 +536,8 @@ function AppContent() {
           </FocusTrap>
           </div>
         )}
+        </div>
+        </Container>
         <footer className="footer-blur fixed bottom-0 left-0 w-full z-10 py-2 px-6 text-center text-xs text-slate-500">
           &copy; {new Date().getFullYear()} {t('title')}
         </footer>
@@ -542,9 +549,11 @@ function AppContent() {
 export default function App() {
   return (
     <I18nProvider>
-      <ToastProvider>
-        <InnerApp />
-      </ToastProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <InnerApp />
+        </ToastProvider>
+      </ThemeProvider>
     </I18nProvider>
   )
 }

@@ -1,0 +1,33 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build --if-present
+      - name: Serve built site (background)
+        run: npm run serve &
+      - name: Wait for server
+        run: |
+          for i in {1..12}; do
+            if curl -sSf http://127.0.0.1:8080 >/dev/null; then
+              echo 'server up'; break
+            fi
+            sleep 1
+          done
+      - name: Run Lighthouse (local binary)
+        run: npm run lighthouse
+      - name: Check thresholds
+        run: node ./scripts/check_lighthouse.js ./lighthouse/report.json

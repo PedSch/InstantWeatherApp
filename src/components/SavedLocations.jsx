@@ -25,8 +25,8 @@ export default function SavedLocations({ items = [], onSelect = () => {}, onRemo
       </div>
       {(!items || items.length === 0) ? (
         <div className="p-4 rounded bg-white/80 text-slate-600 shadow-sm">
-          <div className="text-sm">No saved locations yet.</div>
-          <div className="text-xs text-slate-400">Search a city and press "{t('save_location')}" to save it here.</div>
+          <div className="text-sm">{t('no_saved_locations')}</div>
+          <div className="text-xs text-slate-400">{t('no_saved_hint')}</div>
         </div>
       ) : (
         <div className="flex flex-col gap-2">

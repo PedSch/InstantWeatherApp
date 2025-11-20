@@ -62,6 +62,7 @@ function AppContent() {
   const [trivia, setTrivia] = useState(null)
   const [showAnswer, setShowAnswer] = useState(false)
   const [showGeoPrompt, setShowGeoPrompt] = useState(false)
+  const [showSavedDrawer, setShowSavedDrawer] = useState(false)
 
   useEffect(() => {
     try { localStorage.setItem('unit', unit) } catch (e) {}
@@ -301,10 +302,10 @@ function AppContent() {
           <LanguageToggle />
         </div>
       </header>
-      <div className="min-h-screen bg-slate-50 flex items-start justify-center p-6 pt-20">
-        <div className="w-full max-w-6xl flex gap-6">
+      <div className="min-h-screen bg-slate-50 flex items-start justify-center p-4 pt-20">
+        <div className="w-full max-w-6xl flex gap-6 flex-col md:flex-row">
           {/* Left sidebar with saved locations */}
-          <aside className="w-72">
+          <aside className="hidden md:block w-72">
             <div className="card glass mb-4">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-semibold">{t('saved_locations')}</h2>
@@ -315,6 +316,14 @@ function AppContent() {
               }} onRemove={removeLocation} />
             </div>
           </aside>
+          {/* Mobile saved locations drawer toggle */}
+          <div className="md:hidden w-full mb-2">
+            <div className="flex items-center justify-end">
+              <button className="px-3 py-2 rounded bg-sky-600 text-white text-sm" onClick={() => setShowSavedDrawer(true)}>
+                {t('saved_locations')}
+              </button>
+            </div>
+          </div>
           {/* Geo permission banner */}
           {showGeoPrompt && (
             <div className="fixed top-16 left-1/2 -translate-x-1/2 z-40">
@@ -354,9 +363,9 @@ function AppContent() {
                 {/* Only show weather/fact if a location is selected/searched */}
                 {weather ? (
                   <div>
-                    <div className="flex items-center justify-end gap-2 mb-2">
+                    <div className="flex items-center justify-end gap-2 mb-2 flex-wrap">
                       <button onClick={() => saveLocation(weather.name)} className="px-3 py-1 rounded bg-sky-600 text-white text-sm shadow">{t('save_location')}</button>
-                      <button onClick={() => notifyWeather()} className="px-3 py-1 rounded bg-emerald-600 text-white text-sm shadow">Notify</button>
+                      <button onClick={() => notifyWeather()} className="px-3 py-1 rounded bg-emerald-600 text-white text-sm shadow">{t('notify')}</button>
                       <ShareButton text={`${weather.name}, ${weather.country}: ${Math.round(weather.temp)}°${unit}. ${funFact ? funFact : ''}`}/>
                     </div>
                     <WeatherCard data={weather} unit={unit} />
@@ -367,10 +376,10 @@ function AppContent() {
                     </div>
                     {/* Trivia panel */}
                     <div className="mt-4 p-4 rounded-lg bg-white/70 shadow text-slate-700">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="font-semibold">Trivia</div>
-                        <div className="text-xs text-slate-500">{trivia && `${trivia.category} • ${trivia.difficulty}`}</div>
-                      </div>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="font-semibold">{t('trivia')}</div>
+                          <div className="text-xs text-slate-500">{trivia && `${trivia.category} • ${trivia.difficulty}`}</div>
+                        </div>
                       {trivia ? (
                         <div>
                           <div className="text-sm mb-2">{trivia.question}</div>
@@ -382,15 +391,15 @@ function AppContent() {
                             ))}
                           </div>
                           {showAnswer && (
-                            <div className="mt-2 text-sm text-slate-700">Answer: <strong>{trivia.correct}</strong></div>
+                            <div className="mt-2 text-sm text-slate-700">{t('answer')}: <strong>{trivia.correct}</strong></div>
                           )}
                           <div className="mt-3 flex gap-2">
-                            <button className="px-3 py-1 rounded bg-sky-600 text-white text-sm" onClick={() => { setTrivia(null); setShowAnswer(false); }}>New</button>
-                            <ShareButton text={trivia.question + ' — Answer: ' + trivia.correct} />
+                            <button className="px-3 py-1 rounded bg-sky-600 text-white text-sm" onClick={() => { setTrivia(null); setShowAnswer(false); }}>{t('new')}</button>
+                            <ShareButton text={trivia.question + ' — ' + t('answer') + ': ' + trivia.correct} />
                           </div>
                         </div>
                       ) : (
-                        <div className="text-sm">No trivia loaded. <button className="underline" onClick={async () => { const t = await fetchTrivia(); if (t) setTrivia(t); }}>Load a trivia question</button></div>
+                        <div className="text-sm">{t('no_trivia')}. <button className="underline" onClick={async () => { const q = await fetchTrivia(); if (q) setTrivia(q); }}>{t('load_trivia')}</button></div>
                       )}
                     </div>
                   </div>
@@ -421,6 +430,24 @@ function AppContent() {
 
         {toast && (
           <div className="fixed left-6 bottom-6 bg-slate-800 text-white px-4 py-2 rounded shadow-lg">{toast}</div>
+        )}
+
+        {/* Mobile saved locations drawer */}
+        {showSavedDrawer && (
+          <div className="fixed inset-0 z-50 flex">
+            <div className="fixed inset-0 bg-black/40" onClick={() => setShowSavedDrawer(false)} />
+            <div className="ml-auto w-80 bg-white h-full p-4 overflow-auto">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold">{t('saved_locations')}</h3>
+                <button className="px-2 py-1" onClick={() => setShowSavedDrawer(false)}>Close</button>
+              </div>
+              <SavedLocations items={saved} onSelect={(it) => {
+                setShowSavedDrawer(false)
+                if (it && it.lat && it.lon) fetchForecastByCoords(it.lat, it.lon, it.name, it.country)
+                else handleSearch(it.name)
+              }} onRemove={(n) => { removeLocation(n); }} />
+            </div>
+          </div>
         )}
         <footer className="footer-blur fixed bottom-0 left-0 w-full z-10 py-2 px-6 text-center text-xs text-slate-500">
           &copy; {new Date().getFullYear()} Instant Weather

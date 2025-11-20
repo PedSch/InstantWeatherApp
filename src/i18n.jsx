@@ -35,6 +35,8 @@ const TRANSLATIONS = {
     no_trivia: 'No trivia loaded',
     answer: 'Answer',
     new: 'New',
+    no_saved_locations: 'No saved locations yet.',
+    no_saved_hint: 'Search a city and press "Save" to save it here.',
     notify: 'Notify',
     share: 'Share'
   },
@@ -62,6 +64,8 @@ const TRANSLATIONS = {
     no_trivia: 'No hay trivia cargada',
     answer: 'Respuesta',
     new: 'Nuevo',
+    no_saved_locations: 'No hay ubicaciones guardadas aún.',
+    no_saved_hint: 'Busca una ciudad y presiona "Guardar" para guardarla aquí.',
     notify: 'Notificar',
     share: 'Compartir'
   },
@@ -89,6 +93,8 @@ const TRANSLATIONS = {
     no_trivia: 'No hi ha trivia carregada',
     answer: 'Resposta',
     new: 'Nou',
+    no_saved_locations: 'No hi ha ubicacions desades encara.',
+    no_saved_hint: 'Cerca una ciutat i prem "Desa" per desar-la aquí.',
     notify: 'Notificar',
     share: 'Comparteix'
   },
@@ -116,6 +122,8 @@ const TRANSLATIONS = {
     no_trivia: 'Nenhuma trivia carregada',
     answer: 'Resposta',
     new: 'Nova',
+    no_saved_locations: 'Nenhum local salvo ainda.',
+    no_saved_hint: 'Pesquise uma cidade e pressione "Salvar" para salvá-la aqui.',
     notify: 'Notificar',
     share: 'Compartilhar'
   }

@@ -12,7 +12,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const TRANSLATIONS = {
   en: {
-    title: 'Instant Weather',
+    title: 'ACTIVO Weather',
     search_placeholder: 'Search city (e.g. London, New York)',
     search_button: 'Search',
     loading: 'Loading...',
@@ -37,11 +37,17 @@ const TRANSLATIONS = {
     new: 'New',
     no_saved_locations: 'No saved locations yet.',
     no_saved_hint: 'Search a city and press "Save" to save it here.',
+    geo_prompt: 'CODEWITHDRO requests your location to show local weather.',
+    geo_allow: 'Allow',
+    geo_deny: 'No thanks',
+    close: 'Close',
+    welcome_title: '🌤️ Welcome to ACTIVO Weather!',
+    welcome_subtitle: 'Search for any city or select a saved location to see weather, fun facts, and more.',
     notify: 'Notify',
     share: 'Share'
   },
   es: {
-    title: 'Tiempo Instantáneo',
+    title: 'ACTIVO Weather',
     search_placeholder: 'Buscar ciudad (p. ej. Londres, Nueva York)',
     search_button: 'Buscar',
     loading: 'Cargando...',
@@ -66,11 +72,17 @@ const TRANSLATIONS = {
     new: 'Nuevo',
     no_saved_locations: 'No hay ubicaciones guardadas aún.',
     no_saved_hint: 'Busca una ciudad y presiona "Guardar" para guardarla aquí.',
+    geo_prompt: 'CODEWITHDRO solicita tu ubicación para mostrar el clima local.',
+    geo_allow: 'Permitir',
+    geo_deny: 'No, gracias',
+    close: 'Cerrar',
+    welcome_title: '🌤️ ¡Bienvenido a ACTIVO Weather!',
+    welcome_subtitle: 'Busca cualquier ciudad o selecciona una ubicación guardada para ver el clima, datos curiosos y más.',
     notify: 'Notificar',
     share: 'Compartir'
   },
   ca: {
-    title: 'Temps Instantani',
+    title: 'ACTIVO Weather',
     search_placeholder: 'Cerca ciutat (p. ex. Londres, Nova York)',
     search_button: 'Cerca',
     loading: 'Carregant...',
@@ -95,11 +107,17 @@ const TRANSLATIONS = {
     new: 'Nou',
     no_saved_locations: 'No hi ha ubicacions desades encara.',
     no_saved_hint: 'Cerca una ciutat i prem "Desa" per desar-la aquí.',
+    geo_prompt: 'CODEWITHDRO sol·licita la teva ubicació per mostrar el temps local.',
+    geo_allow: 'Permetre',
+    geo_deny: 'No gràcies',
+    close: 'Tancar',
+    welcome_title: '🌤️ Benvingut a ACTIVO Weather!',
+    welcome_subtitle: 'Cerca qualsevol ciutat o selecciona una ubicació desada per veure el temps, curiositats i més.',
     notify: 'Notificar',
     share: 'Comparteix'
   },
   pt: {
-    title: 'Clima Instantâneo',
+    title: 'ACTIVO Weather',
     search_placeholder: 'Pesquisar cidade (ex. Londres, Nova Iorque)',
     search_button: 'Pesquisar',
     loading: 'Carregando...',
@@ -124,6 +142,12 @@ const TRANSLATIONS = {
     new: 'Nova',
     no_saved_locations: 'Nenhum local salvo ainda.',
     no_saved_hint: 'Pesquise uma cidade e pressione "Salvar" para salvá-la aqui.',
+    geo_prompt: 'CODEWITHDRO solicita sua localização para mostrar o clima local.',
+    geo_allow: 'Permitir',
+    geo_deny: 'Não, obrigado',
+    close: 'Fechar',
+    welcome_title: '🌤️ Bem-vindo ao ACTIVO Weather!',
+    welcome_subtitle: 'Pesquise qualquer cidade ou selecione um local salvo para ver o clima, curiosidades e mais.',
     notify: 'Notificar',
     share: 'Compartilhar'
   }

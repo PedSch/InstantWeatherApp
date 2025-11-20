@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 
 const TRANSLATIONS = {
   en: {
-    title: 'Instant Weather',
+    title: 'ACTIVO Weather',
     search_placeholder: 'Search city (e.g. London, New York)',
     search_button: 'Search',
     loading: 'Loading...',
@@ -18,7 +18,7 @@ const TRANSLATIONS = {
     error_fetch: 'Failed to fetch weather',
   },
   es: {
-    title: 'Tiempo Instantáneo',
+    title: 'ACTIVO Weather',
     search_placeholder: 'Buscar ciudad (p. ej. Londres, Nueva York)',
     search_button: 'Buscar',
     loading: 'Cargando...',
@@ -34,7 +34,7 @@ const TRANSLATIONS = {
     error_fetch: 'Error al obtener el clima',
   },
   ca: {
-    title: 'Temps Instantani',
+    title: 'ACTIVO Weather',
     search_placeholder: 'Cerca ciutat (p. ex. Londres, Nova York)',
     search_button: 'Cerca',
     loading: 'Carregant...',
@@ -50,7 +50,7 @@ const TRANSLATIONS = {
     error_fetch: 'Error en obtenir el temps',
   },
   pt: {
-    title: 'Clima Instantâneo',
+    title: 'ACTIVO Weather',
     search_placeholder: 'Pesquisar cidade (ex. Londres, Nova Iorque)',
     search_button: 'Pesquisar',
     loading: 'Carregando...',

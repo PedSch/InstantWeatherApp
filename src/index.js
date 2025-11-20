@@ -70,17 +70,31 @@ if (import.meta.env.PROD) {
 			showError('UnhandledRejection: ' + reason)
 		})
 
-		// Debug toolbar to reset service worker and local flags
-		const toolbar = document.createElement('div')
-		Object.assign(toolbar.style, {
-			position: 'fixed',
-			right: '12px',
-			bottom: '12px',
-			zIndex: 99999,
-		})
+		// Small, unobtrusive reset button to clear SW/cache/local (for debugging)
 		const btn = document.createElement('button')
-		btn.textContent = 'Reset App (clear SW/cache/local)'
-		Object.assign(btn.style, { padding: '8px 10px', borderRadius: '8px', background: '#111827', color: 'white', border: 'none', cursor: 'pointer' })
+		btn.setAttribute('title', 'Reset App (clear SW/cache/local)')
+		btn.textContent = '⟲'
+		Object.assign(btn.style, {
+			position: 'fixed',
+			right: '8px',
+			bottom: '8px',
+			zIndex: 99999,
+			width: '28px',
+			height: '28px',
+			padding: '0',
+			borderRadius: '14px',
+			background: '#111827',
+			color: 'white',
+			border: 'none',
+			cursor: 'pointer',
+			opacity: '0.28',
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+			fontSize: '14px'
+		})
+		btn.onmouseover = () => btn.style.opacity = '0.9'
+		btn.onmouseout = () => btn.style.opacity = '0.28'
 		btn.onclick = async () => {
 			try {
 				if ('serviceWorker' in navigator) {
@@ -94,11 +108,10 @@ if (import.meta.env.PROD) {
 				localStorage.removeItem('geo_prompted')
 				location.reload()
 			} catch (e) {
-				alert('Reset failed: ' + e)
+				console.warn('Reset failed:', e)
 			}
 		}
-		toolbar.appendChild(btn)
-		document.body.appendChild(toolbar)
+		document.body.appendChild(btn)
 	} catch (e) {
 		// ignore overlay errors
 	}

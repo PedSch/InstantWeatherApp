@@ -10,7 +10,7 @@
  *   the left-hand preview can show a quick snapshot without re-fetching.
  * - Geolocation is requested on mount to show the user's current weather (if permitted).
  */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import SearchBar from './components/SearchBar'
 import WeatherCard from './components/WeatherCard'
 import MapPreview from './components/MapPreview'
@@ -22,6 +22,7 @@ import UnitToggle from './components/UnitToggle'
 import { I18nProvider, useTranslation } from './i18n.jsx'
 import { fetchFunFact } from './funFact.js'
 import { fetchTrivia } from './trivia.js'
+import FocusTrap from 'focus-trap-react'
 import LanguageToggle from './components/LanguageToggle'
 import ThemeToggle from './components/ThemeToggle'
 import SavedLocations from './components/SavedLocations'
@@ -61,8 +62,14 @@ function AppContent() {
   const [funFact, setFunFact] = useState(null)
   const [trivia, setTrivia] = useState(null)
   const [showAnswer, setShowAnswer] = useState(false)
+  const [triviaQueue, setTriviaQueue] = useState([])
   const [showGeoPrompt, setShowGeoPrompt] = useState(false)
   const [showSavedDrawer, setShowSavedDrawer] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const drawerRef = useRef(null)
+  const closeBtnRef = useRef(null)
+  const headerRef = useRef(null)
+  const [headerDimmed, setHeaderDimmed] = useState(false)
 
   useEffect(() => {
     try { localStorage.setItem('unit', unit) } catch (e) {}
@@ -273,6 +280,57 @@ function AppContent() {
     } catch (e) {}
   }
 
+  // When a location loads, auto-load a trivia question
+  useEffect(() => {
+    let mounted = true
+    if (weather) {
+      setShowAnswer(false)
+      // fetch a trivia question asynchronously
+      // preload 3 trivia questions and set the first one
+      fetchTrivia(3).then(qs => {
+        if (!mounted) return
+        if (Array.isArray(qs) && qs.length > 0) {
+          setTrivia(qs[0])
+          setTriviaQueue(qs.slice(1))
+        } else if (qs) {
+          setTrivia(qs)
+          setTriviaQueue([])
+        }
+      }).catch(() => {})
+    }
+    return () => { mounted = false }
+  }, [weather])
+
+  // When drawer opens: focus the close button and let focus-trap handle tab/escape
+  useEffect(() => {
+    if (!drawerOpen) return
+    try { closeBtnRef.current && closeBtnRef.current.focus() } catch (e) {}
+  }, [drawerOpen])
+
+  // Auto-scroll drawer to top and trigger inner element animations when opening
+  useEffect(() => {
+    if (!drawerOpen) return
+    const inner = drawerRef.current && drawerRef.current.querySelector('.drawer-inner')
+    if (inner) {
+      inner.scrollTop = 0
+      // add an 'enter' class to animate children, then remove after animation
+      inner.classList.add('entering')
+      const t = setTimeout(() => inner.classList.remove('entering'), 420)
+      return () => clearTimeout(t)
+    }
+  }, [drawerOpen])
+
+  // Dim the header when the user scrolls to avoid overlap visibility
+  useEffect(() => {
+    function onScroll() {
+      const y = window.scrollY || window.pageYOffset
+      setHeaderDimmed(y > 10)
+    }
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   // Notify current weather via native/local notifications or Web Notification
   async function notifyWeather() {
     try {
@@ -295,7 +353,7 @@ function AppContent() {
 
   return (
     <React.Fragment>
-      <header className="header-blur fixed top-0 left-0 w-full z-10 py-3 px-6 flex items-center justify-between">
+      <header ref={headerRef} className={`header-blur fixed top-0 left-0 w-full z-10 py-3 px-6 flex items-center justify-between ${headerDimmed ? 'header-dim' : ''}`}>
         <span className="font-bold text-xl tracking-tight">{t('title')}</span>
         <div className="flex items-center gap-3">
           <ThemeToggle />
@@ -319,19 +377,19 @@ function AppContent() {
           {/* Mobile saved locations drawer toggle */}
           <div className="md:hidden w-full mb-2">
             <div className="flex items-center justify-end">
-              <button className="px-3 py-2 rounded bg-sky-600 text-white text-sm" onClick={() => setShowSavedDrawer(true)}>
+              <button className="px-3 py-2 rounded bg-sky-600 text-white text-sm" onClick={() => { setShowSavedDrawer(true); setTimeout(() => setDrawerOpen(true), 20) }}>
                 {t('saved_locations')}
               </button>
             </div>
           </div>
           {/* Geo permission banner */}
-          {showGeoPrompt && (
+                {showGeoPrompt && (
             <div className="fixed top-16 left-1/2 -translate-x-1/2 z-40">
               <div className="bg-white/90 backdrop-blur rounded-lg px-4 py-3 shadow-md flex items-center gap-4">
-                <div className="text-sm">CODEWITHDRO requests your location to show local weather.</div>
+                <div className="text-sm">{t('geo_prompt')}</div>
                 <div className="flex items-center gap-2">
-                  <button className="px-3 py-1 rounded bg-sky-600 text-white text-sm" onClick={handleAllowGeo}>Allow</button>
-                  <button className="px-3 py-1 rounded bg-white border" onClick={handleDeclineGeo}>No thanks</button>
+                  <button className="px-3 py-1 rounded bg-sky-600 text-white text-sm" onClick={handleAllowGeo}>{t('geo_allow')}</button>
+                  <button className="px-3 py-1 rounded bg-white border" onClick={handleDeclineGeo}>{t('geo_deny')}</button>
                 </div>
               </div>
             </div>
@@ -394,7 +452,23 @@ function AppContent() {
                             <div className="mt-2 text-sm text-slate-700">{t('answer')}: <strong>{trivia.correct}</strong></div>
                           )}
                           <div className="mt-3 flex gap-2">
-                            <button className="px-3 py-1 rounded bg-sky-600 text-white text-sm" onClick={() => { setTrivia(null); setShowAnswer(false); }}>{t('new')}</button>
+                            <button className="px-3 py-1 rounded bg-sky-600 text-white text-sm" onClick={async () => {
+                              setShowAnswer(false)
+                              if (triviaQueue && triviaQueue.length > 0) {
+                                const next = triviaQueue[0]
+                                setTrivia(next)
+                                setTriviaQueue(triviaQueue.slice(1))
+                                return
+                              }
+                              const qs = await fetchTrivia(3)
+                              if (qs && Array.isArray(qs) && qs.length > 0) {
+                                setTrivia(qs[0])
+                                setTriviaQueue(qs.slice(1))
+                              } else if (qs) {
+                                setTrivia(qs)
+                                setTriviaQueue([])
+                              }
+                            }}>{t('new')}</button>
                             <ShareButton text={trivia.question + ' — ' + t('answer') + ': ' + trivia.correct} />
                           </div>
                         </div>
@@ -405,8 +479,8 @@ function AppContent() {
                   </div>
                 ) : (
                   <div className="text-center text-slate-400 py-12 flex flex-col items-center justify-center">
-                    <div className="text-3xl font-bold mb-2 text-slate-700">🌤️ Welcome to Instant Weather!</div>
-                    <div className="text-lg mb-4">Search for any city or select a saved location to see weather, fun facts, and more.</div>
+                    <div className="text-3xl font-bold mb-2 text-slate-700">{t('welcome_title')}</div>
+                    <div className="text-lg mb-4">{t('welcome_subtitle')}</div>
                     <div className="max-w-md w-full">
                       <SearchBar onSearch={handleSearch} placeholder={t('search_placeholder')} buttonText={t('search_button')} />
                     </div>
@@ -434,23 +508,28 @@ function AppContent() {
 
         {/* Mobile saved locations drawer */}
         {showSavedDrawer && (
-          <div className="fixed inset-0 z-50 flex">
-            <div className="fixed inset-0 bg-black/40" onClick={() => setShowSavedDrawer(false)} />
-            <div className="ml-auto w-80 bg-white h-full p-4 overflow-auto">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold">{t('saved_locations')}</h3>
-                <button className="px-2 py-1" onClick={() => setShowSavedDrawer(false)}>Close</button>
-              </div>
-              <SavedLocations items={saved} onSelect={(it) => {
-                setShowSavedDrawer(false)
+          <div className="fixed inset-0 z-50">
+            <div className={`fixed inset-0 backdrop-fade ${drawerOpen ? 'open' : ''}`} onClick={() => { setDrawerOpen(false); setTimeout(() => setShowSavedDrawer(false), 320) }} />
+            <FocusTrap active={drawerOpen} focusTrapOptions={{ onDeactivate: () => { setDrawerOpen(false); setTimeout(() => setShowSavedDrawer(false), 320) }, clickOutsideDeactivates: true, escapeDeactivates: true }}>
+              <div ref={drawerRef} className={`drawer-panel fixed right-0 top-0 h-full w-80 bg-white p-4 overflow-auto ${drawerOpen ? 'open' : ''}`} role="dialog" aria-modal="true" aria-labelledby="saved-drawer-title">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 id="saved-drawer-title" className="font-semibold">{t('saved_locations')}</h3>
+                  <button ref={closeBtnRef} className="px-2 py-1" onClick={() => { setDrawerOpen(false); setTimeout(() => setShowSavedDrawer(false), 320) }}>{t('close')}</button>
+                </div>
+                <div className="drawer-inner">
+                  <SavedLocations items={saved} onSelect={(it) => {
+                    setDrawerOpen(false)
+                setTimeout(() => setShowSavedDrawer(false), 320)
                 if (it && it.lat && it.lon) fetchForecastByCoords(it.lat, it.lon, it.name, it.country)
                 else handleSearch(it.name)
-              }} onRemove={(n) => { removeLocation(n); }} />
+                }} onRemove={(n) => { removeLocation(n); }} />
+              </div>
             </div>
+          </FocusTrap>
           </div>
         )}
         <footer className="footer-blur fixed bottom-0 left-0 w-full z-10 py-2 px-6 text-center text-xs text-slate-500">
-          &copy; {new Date().getFullYear()} Instant Weather
+          &copy; {new Date().getFullYear()} {t('title')}
         </footer>
       </div>
     </React.Fragment>

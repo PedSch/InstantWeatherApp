@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview --port 5173"
+    "preview": "vite preview --port 5173",
+    "test": "vitest",
+    "lint": "eslint . --ext .js,.jsx"
   },
   "dependencies": {
     "@capacitor/cli": "^7.4.4",
@@ -20,6 +22,13 @@
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",
     "tailwindcss": "^3.4.18",
-    "vite": "^5.4.21"
+    "vite": "^5.4.21",
+    "focus-trap-react": "^9.0.2",
+    "vitest": "^1.2.1",
+    "@testing-library/react": "^15.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "jsdom": "^22.1.0",
+    "eslint": "^8.48.0",
+    "eslint-plugin-react": "^7.33.2"
   }
 }

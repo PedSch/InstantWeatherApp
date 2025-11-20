@@ -1,0 +1,5 @@
+{
+  "appId": "com.yourdomain.instantweather",
+  "appName": "instant-weather-app",
+  "webDir": "dist"
+}

@@ -30,6 +30,13 @@ const TRANSLATIONS = {
     error_fetch: 'Failed to fetch weather',
     fun_fact: 'Fun Fact',
     no_fact: 'No fun fact found for this location.',
+    trivia: 'Trivia',
+    load_trivia: 'Load a trivia question',
+    no_trivia: 'No trivia loaded',
+    answer: 'Answer',
+    new: 'New',
+    notify: 'Notify',
+    share: 'Share'
   },
   es: {
     title: 'Tiempo Instantáneo',
@@ -50,6 +57,13 @@ const TRANSLATIONS = {
     error_fetch: 'Error al obtener el clima',
     fun_fact: 'Dato curioso',
     no_fact: 'No se encontró un dato curioso para este lugar.',
+    trivia: 'Trivia',
+    load_trivia: 'Cargar una pregunta de trivia',
+    no_trivia: 'No hay trivia cargada',
+    answer: 'Respuesta',
+    new: 'Nuevo',
+    notify: 'Notificar',
+    share: 'Compartir'
   },
   ca: {
     title: 'Temps Instantani',
@@ -70,6 +84,13 @@ const TRANSLATIONS = {
     error_fetch: 'Error en obtenir el temps',
     fun_fact: 'Curiositat',
     no_fact: 'No s’ha trobat cap curiositat per aquest lloc.',
+    trivia: 'Trivia',
+    load_trivia: 'Carregar una pregunta de trivia',
+    no_trivia: 'No hi ha trivia carregada',
+    answer: 'Resposta',
+    new: 'Nou',
+    notify: 'Notificar',
+    share: 'Comparteix'
   },
   pt: {
     title: 'Clima Instantâneo',
@@ -90,6 +111,13 @@ const TRANSLATIONS = {
     error_fetch: 'Falha ao obter o clima',
     fun_fact: 'Curiosidade',
     no_fact: 'Nenhuma curiosidade encontrada para este local.',
+    trivia: 'Trivia',
+    load_trivia: 'Carregar uma pergunta de trivia',
+    no_trivia: 'Nenhuma trivia carregada',
+    answer: 'Resposta',
+    new: 'Nova',
+    notify: 'Notificar',
+    share: 'Compartilhar'
   }
 }
 

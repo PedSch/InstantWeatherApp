@@ -7,8 +7,17 @@ export async function fetchTrivia() {
     const json = await res.json()
     if (!json.results || json.results.length === 0) return null
     const item = json.results[0]
-    // Decode HTML entities (basic)
-    const decode = (s) => s.replace(/&quot;|&#039;/g, (m) => (m === '&quot;' ? '"' : "'"))
+    // Decode HTML entities (basic, extended)
+    const decode = (s) => {
+      if (!s) return s
+      return s
+        .replace(/&quot;/g, '"')
+        .replace(/&#039;/g, "'")
+        .replace(/&amp;/g, '&')
+        .replace(/&eacute;/g, 'é')
+        .replace(/&uuml;/g, 'ü')
+        .replace(/&rsquo;/g, '’')
+    }
     const question = decode(item.question)
     const correct = decode(item.correct_answer)
     const incorrect = item.incorrect_answers.map(decode)

@@ -22,6 +22,30 @@ try {
 	// ignore
 }
 
+// Initialize Google Analytics 4 if configured
+try {
+	const gaId = import.meta.env.VITE_GA4_ID;
+	if (gaId && typeof window !== 'undefined') {
+		// Load GA4 script
+		const script = document.createElement('script');
+		script.async = true;
+		script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+		document.head.appendChild(script);
+		
+		// Initialize gtag
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){window.dataLayer.push(arguments);}
+		window.gtag = gtag;
+		gtag('js', new Date());
+		gtag('config', gaId, {
+			send_page_view: true,
+			anonymize_ip: true
+		});
+	}
+} catch (err) {
+	// ignore
+}
+
 // Register Service Worker in production contexts
 if (import.meta.env.PROD) {
 	try {

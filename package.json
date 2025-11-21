@@ -5,10 +5,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:staging": "vite build --mode staging",
+    "build:production": "vite build --mode production",
     "preview": "vite preview --port 5173",
     "serve": "http-server ./dist -p 8080 -c-1",
     "lighthouse": "lighthouse http://127.0.0.1:8080 --output=json --output-path=./lighthouse/report.json --chrome-flags=\"--no-sandbox\"",
     "test": "vitest",
+    "test:ci": "vitest run",
     "lint": "eslint . --ext .js,.jsx"
   },
   "dependencies": {

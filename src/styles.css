@@ -133,9 +133,14 @@ body {
   .text-3xl { font-size: 1.25rem }
   .text-2xl { font-size: 1.05rem }
   .text-lg { font-size: 0.95rem }
-  header.header-blur { padding-left: 12px; padding-right: 12px }
+  header.header-blur { padding-left: 8px; padding-right: 8px }
   .footer-blur { padding-left: 8px; padding-right: 8px; font-size: 11px }
   .card .p-6 { padding: 12px }
+}
+
+/* Ultra-small phones (<=340px): compress header control gaps */
+@media (max-width: 340px) {
+  .header-controls { gap: 2px }
 }
 
 /* Ensure large phones like iPhone 15 scale well: cap content width and ensure padding */

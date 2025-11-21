@@ -359,11 +359,11 @@ function AppContent() {
 
   return (
     <React.Fragment>
-      <header ref={headerRef} className={`header-blur fixed top-0 left-0 w-full z-10 py-3 ${headerDimmed ? 'header-dim' : ''}`}>
-        <Container className="flex items-center justify-between">
-          <span className="font-bold text-xl tracking-tight">{t('title')}</span>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
+      <header ref={headerRef} className={`header-blur fixed top-0 left-0 w-full z-10 py-2 sm:py-3 ${headerDimmed ? 'header-dim' : ''}`}>
+        <Container className="flex items-center gap-1 sm:gap-2 flex-wrap">
+          <span className="font-bold text-xl tracking-tight whitespace-nowrap">{t('title')}</span>
+          <div className="flex items-center gap-1 sm:gap-2 flex-wrap header-controls">
+            <span className="hidden sm:inline-flex"><ThemeToggle /></span>
             <LanguageToggle />
           </div>
         </Container>
@@ -408,12 +408,14 @@ function AppContent() {
           {/* Main content */}
           <main className="flex-1 max-w-3xl">
             <Card className="glass p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h1 className="text-2xl font-semibold">{t('title')}</h1>
-                <div className="flex items-center gap-3">
+              <div className="flex items-center justify-end sm:justify-between mb-4">
+                <h1 className="hidden sm:block text-2xl font-semibold tracking-tight">{t('title')}</h1>
+                <div className="flex items-center gap-1 sm:gap-2">
                   <ThemeToggle />
-                  <LanguageToggle />
-                  <UnitToggle unit={unit} setUnit={setUnit} />
+                  <div className="flex flex-col items-end gap-1 sm:flex-row sm:items-center sm:gap-2">
+                    <LanguageToggle />
+                    <UnitToggle unit={unit} setUnit={setUnit} />
+                  </div>
                 </div>
               </div>
 

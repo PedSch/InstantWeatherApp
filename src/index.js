@@ -1,5 +1,6 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
+import { Analytics } from '@vercel/analytics/react'
 import App from './App'
 import './styles.css'
 import { initSentry } from './initSentry'
@@ -13,7 +14,14 @@ const root = createRoot(container)
 // Use `React.createElement` here to avoid relying on a JSX transform
 // in `.js` files when building. This keeps the entrypoint compatible
 // with environments that don't automatically convert JSX in `.js`.
-root.render(React.createElement(App))
+root.render(
+	React.createElement(
+		React.Fragment,
+		null,
+		React.createElement(Analytics),
+		React.createElement(App)
+	)
+)
 
 // Initialize Sentry if configured (Vite env `VITE_SENTRY_DSN`)
 try {

@@ -1,21 +1,26 @@
 import React, { useState, useEffect, useRef } from 'react'
 
+// Yandex Static API max size is 650×450; other providers may allow larger
+const YANDEX_MAX_WIDTH = 650
+const YANDEX_MAX_HEIGHT = 450
+
 export default function MapPreview({ lat, lon, name }) {
   const containerRef = useRef(null)
   const [src, setSrc] = useState(null)
+  const [loadError, setLoadError] = useState(false)
 
   useEffect(() => {
     if (!lat || !lon) return
+    setLoadError(false)
 
     function buildUrl(width, height, dpr = 1) {
-      // Yandex static map expects size as "W,H"; cap to a reasonable max
-      const w = Math.min(1200, Math.max(200, Math.round(width * dpr)))
-      const h = Math.min(800, Math.max(120, Math.round(height * dpr)))
-      // Allow overriding map provider base via Vite env var. Also allow an
-      // optional image CDN base that will proxy/cache images. If a CDN base
-      // is provided, we will append the full provider URL as a `u` query
-      // parameter; the CDN must support this convention.
       const providerBase = import.meta.env.VITE_MAP_PROVIDER_BASE || 'https://static-maps.yandex.ru/1.x/'
+      const isYandex = providerBase.includes('yandex')
+      // Yandex Static API allows max 650×450 px; cap when using default provider
+      const maxW = isYandex ? YANDEX_MAX_WIDTH : 1200
+      const maxH = isYandex ? YANDEX_MAX_HEIGHT : 800
+      const w = Math.min(maxW, Math.max(200, Math.round(width * dpr)))
+      const h = Math.min(maxH, Math.max(120, Math.round(height * dpr)))
       const providerUrl = `${providerBase}?lang=en-US&ll=${lon},${lat}&z=10&size=${w},${h}&l=map&pt=${lon},${lat},pm2rdm`
       const cdnBase = import.meta.env.VITE_IMAGE_CDN_BASE
       if (cdnBase) {
@@ -52,15 +57,23 @@ export default function MapPreview({ lat, lon, name }) {
 
   if (!lat || !lon) return null
 
+  if (loadError) {
+    return (
+      <div className="mt-6 rounded-xl overflow-hidden shadow bg-slate-100 flex items-center justify-center h-48 text-slate-500 text-sm">
+        Map unavailable
+      </div>
+    )
+  }
+
   return (
     <div ref={containerRef} className="mt-6 rounded-xl overflow-hidden shadow">
-      {/* use loading=lazy and provide srcset for DPR-aware images */}
       <img
         src={src ? src.src1 : ''}
         srcSet={src ? `${src.src1} 1x, ${src.src2} 2x` : undefined}
         alt={`Map of ${name}`}
         className="w-full h-48 object-cover"
         loading="lazy"
+        onError={() => setLoadError(true)}
       />
     </div>
   )

@@ -3,6 +3,7 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
+    { "source": "/favicon.ico", "destination": "/icons/icon-192.svg" },
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }

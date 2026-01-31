@@ -102,6 +102,18 @@ function buildQs(params, allowed) {
 
 module.exports = async (req, res) => {
   try {
+    // Vercel BotID: reject requests classified as bots
+    try {
+      const { checkBotId } = await import('botid/server');
+      const verification = await checkBotId();
+      if (verification && verification.isBot) {
+        res.statusCode = 403;
+        return res.end(JSON.stringify({ error: 'Access denied' }));
+      }
+    } catch (e) {
+      // if BotID not available, continue (e.g. local dev)
+    }
+
     // Parse incoming URL and params
     const urlBase = req.url || ''
     const base = new URL(urlBase, 'http://localhost')

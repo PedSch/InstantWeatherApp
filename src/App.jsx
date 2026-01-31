@@ -27,6 +27,7 @@ import Container from './components/ui/Container'
 import Card from './components/ui/Card'
 import { useWeather } from './hooks/useWeather'
 import { useSavedLocations } from './hooks/useSavedLocations'
+import { Analytics } from '@vercel/analytics/react'
 
 function InnerApp() {
   return <AppContent />
@@ -394,6 +395,7 @@ export default function App() {
       <ThemeProvider>
         <ToastProvider>
           <InnerApp />
+          <Analytics />
         </ToastProvider>
       </ThemeProvider>
     </I18nProvider>

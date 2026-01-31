@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Modern font stack — Inter preferred but falls back to system fonts */
+:root{
+  --bg-1: #f8fafc;
+  --bg-2: #eef2ff;
+  --card: rgba(255,255,255,0.7);
+  --muted: #6b7280;
+  --glass: rgba(255,255,255,0.6);
+  /* Design tokens (CSS variables) for spacing and typography */
+  --space-xs: 6px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+
+  --font-base: 16px;
+  --font-lg: 20px;
+}
+
+html, body, #root {
+  height: 100%;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Respect iOS safe-area insets for notches and home indicators */
+body {
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Main content: padding so fixed header/footer don't overlap; safe-area-aware */
+.main-content-padding {
+  padding-top: max(5rem, env(safe-area-inset-top, 0px));
+  padding-bottom: max(5rem, env(safe-area-inset-bottom, 0px));
+}
+
+/* Gentle, modern background gradient */
+body {
+  background: radial-gradient(1000px 500px at 10% 10%, #eaf8ff 0%, transparent 15%), linear-gradient(180deg,var(--bg-1) 0%, var(--bg-2) 100%);
+  color: #0f172a;
+}
+
+.app-container { max-width: 1060px; margin-left:auto; margin-right:auto; }
+
+/* Make the main app container use full width on very small screens */
+.app-responsive { padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+
+/* Cards */
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.55));
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-shadow: 0 8px 30px rgba(2,6,23,0.08);
+}
+
+.muted { color: var(--muted) }
+
+.card-transition { transition: transform 220ms cubic-bezier(.2,.9,.4,1), box-shadow 220ms ease, opacity 220ms ease }
+.card-elevate:hover { transform: translateY(-6px) scale(1.01); box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12) }
+
+.rounded-lg { border-radius: 12px }
+
+.glass { background: var(--glass); backdrop-filter: blur(6px) }
+
+.fade-up { opacity: 0; transform: translateY(6px); animation: fadeUp 360ms ease forwards }
+@keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+/* Responsive tweaks for small screens */
+@media (max-width: 640px) {
+  .min-w-72 { min-width: 64px }
+  .w-72 { width: 18rem }
+}
+
+/* Drawer panel for mobile saved-locations */
+.drawer-panel {
+  transform: translateX(100%) scale(.995);
+  transition: transform 320ms cubic-bezier(.22,.9,.3,1);
+  box-shadow: -8px 0 28px rgba(2,6,23,0.14);
+  /* Use viewport-relative width to fit on small phones */
+  width: min(92vw, 360px);
+}
+.drawer-panel.open {
+  transform: translateX(0) scale(1);
+}
+
+/* Backdrop fade animation */
+.backdrop-fade {
+  background-color: rgba(0,0,0,0);
+  transition: background-color 320ms cubic-bezier(.22,.9,.3,1);
+}
+.backdrop-fade.open {
+  background-color: rgba(0,0,0,0.4);
+}
+
+/* Header dimming when scrolling to reduce overlap */
+.header-blur {
+  transition: background-color 240ms ease, box-shadow 240ms ease, opacity 240ms ease;
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(6px);
+}
+.header-blur.header-dim {
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 6px 20px rgba(2,6,23,0.08);
+  opacity: 0.98;
+}
+
+/* Drawer inner content polish: scale + fade+slide */
+.drawer-panel .card, .drawer-panel .saved-item {
+  transform-origin: right center;
+  transition: transform 320ms cubic-bezier(.22,.9,.3,1), opacity 240ms ease, transform 240ms ease;
+}
+.drawer-panel.open .card, .drawer-panel.open .saved-item {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+}
+.drawer-panel .saved-item { transform: translateX(6px) scale(.995); opacity: 0.85 }
+
+/* Enter animation for inner drawer children */
+.drawer-inner.entering .saved-item {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  transition: transform 320ms cubic-bezier(.22,.9,.3,1) 40ms, opacity 260ms ease 40ms;
+}
+.drawer-inner .saved-item { transition: transform 260ms ease, opacity 220ms ease }
+
+
+/* Small phone tweaks (e.g., iPhone SE) */
+@media (max-width: 360px) {
+  .card { padding: 10px; border-radius: 10px }
+  .text-3xl { font-size: 1.25rem }
+  .text-2xl { font-size: 1.05rem }
+  .text-lg { font-size: 0.95rem }
+  header.header-blur { padding-left: 8px; padding-right: 8px }
+  .footer-blur { padding-left: 8px; padding-right: 8px; font-size: 11px }
+  .card .p-6 { padding: 12px }
+}
+
+/* Ultra-small phones (<=340px): compress header control gaps */
+@media (max-width: 340px) {
+  .header-controls { gap: 2px }
+}
+
+/* Ensure large phones like iPhone 15 scale well: cap content width and ensure padding */
+@media (max-width: 430px) {
+  .max-w-6xl { max-width: 92vw }
+  .w-72 { width: auto }
+}
+

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.development
+.DS_Store
+lighthouse/

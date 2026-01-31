@@ -1,0 +1,41 @@
+{
+  "name": "instant-weather-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:staging": "vite build --mode staging",
+    "build:production": "vite build --mode production",
+    "preview": "vite preview --port 5173",
+    "serve": "http-server ./dist -p 8080 -c-1",
+    "lighthouse": "lighthouse http://127.0.0.1:8080 --output=json --output-path=./lighthouse/report.json --chrome-flags=\"--no-sandbox\"",
+    "test": "vitest",
+    "test:ci": "vitest run",
+    "lint": "eslint . --ext .js,.jsx"
+  },
+  "dependencies": {
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
+    "@capacitor/local-notifications": "^7.0.3",
+    "@sentry/react": "^7.86.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18",
+    "vite": "^5.4.21",
+    "lighthouse": "^11.0.0",
+    "http-server": "^14.1.1",
+    "focus-trap-react": "^9.0.2",
+    "vitest": "^1.2.1",
+    "@testing-library/react": "^15.0.0",
+    "@testing-library/jest-dom": "^6.0.0",
+    "jsdom": "^22.1.0",
+    "eslint": "^8.48.0",
+    "eslint-plugin-react": "^7.33.2"
+  }
+}

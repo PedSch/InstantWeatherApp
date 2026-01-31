@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@vercel/analytics": "^1.4.1",
-    "botid": "^0.0.14",
+    "botid": "^1.5.10",
     "@capacitor/cli": "^7.4.4",
     "@capacitor/core": "^7.4.4",
     "@capacitor/local-notifications": "^7.0.3",

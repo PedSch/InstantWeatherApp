@@ -59,14 +59,14 @@ export default function MapPreview({ lat, lon, name }) {
 
   if (loadError) {
     return (
-      <div className="mt-6 rounded-xl overflow-hidden shadow bg-slate-100 flex items-center justify-center h-48 text-slate-500 text-sm">
+      <div className="mt-8 rounded-xl overflow-hidden shadow bg-slate-100 flex items-center justify-center h-48 text-slate-500 text-sm">
         Map unavailable
       </div>
     )
   }
 
   return (
-    <div ref={containerRef} className="mt-6 rounded-xl overflow-hidden shadow">
+    <div ref={containerRef} className="rounded-xl overflow-hidden shadow mt-8">
       <img
         src={src ? src.src1 : ''}
         srcSet={src ? `${src.src1} 1x, ${src.src2} 2x` : undefined}

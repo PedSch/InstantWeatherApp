@@ -19,8 +19,8 @@ export default function WeatherCard({ data, unit = 'C' }) {
   const tempDisplay = unit === 'F' ? Math.round((temp * 9) / 5 + 32) : Math.round(temp)
 
   return (
-    <Card className="bg-gradient-to-b from-white/80 to-slate-50 rounded-2xl shadow-lg p-4 sm:p-6 flex flex-col sm:flex-row items-center gap-4 card-transition card-elevate fade-up">
-      <div className="flex-none bg-slate-100 rounded-xl p-3 sm:p-4 flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28">
+    <Card className="bg-gradient-to-b from-white/80 to-slate-50 rounded-2xl shadow-lg p-5 sm:p-8 flex flex-col sm:flex-row items-center gap-5 sm:gap-6 card-transition card-elevate fade-up">
+      <div className="flex-none bg-slate-100 rounded-xl p-4 sm:p-5 flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28">
         {getIcon(weathercode, is_day, 'w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20')}
       </div>
       <div className="flex-1 w-full">
@@ -37,7 +37,7 @@ export default function WeatherCard({ data, unit = 'C' }) {
           </div>
         </div>
 
-        <div className="mt-3 flex items-center justify-between gap-4">
+        <div className="mt-4 flex items-center justify-between gap-4">
           <div className="text-slate-600">{/* description derived from code visually */}</div>
           <div className="text-sm text-slate-500">{t('wind')}: {windspeed} km/h</div>
         </div>

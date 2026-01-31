@@ -200,8 +200,8 @@ function AppContent() {
 
   return (
     <React.Fragment>
-      <header ref={headerRef} className={`header-blur fixed top-0 left-0 w-full z-10 py-2 sm:py-3 ${headerDimmed ? 'header-dim' : ''}`}>
-        <Container className="flex items-center gap-1 sm:gap-2 flex-wrap">
+      <header ref={headerRef} className={`header-blur fixed top-0 left-0 w-full z-10 ${headerDimmed ? 'header-dim' : ''}`}>
+        <Container className="flex items-center gap-2 sm:gap-3 flex-wrap">
           <span className="font-bold text-xl tracking-tight whitespace-nowrap">{t('title')}</span>
           <div className="flex items-center gap-1 sm:gap-2 flex-wrap header-controls">
             <span className="hidden sm:inline-flex"><ThemeToggle /></span>
@@ -212,7 +212,7 @@ function AppContent() {
 
       <div className="min-h-screen bg-slate-50 main-content-padding">
         <Container>
-          <div className="w-full max-w-6xl mx-auto flex gap-6 flex-col md:flex-row">
+          <div className="w-full max-w-6xl mx-auto flex gap-6 md:gap-8 lg:gap-10 flex-col md:flex-row">
           {/* Left sidebar with saved locations */}
           <aside className="hidden md:block w-72">
             <div className="card glass mb-6">
@@ -226,21 +226,21 @@ function AppContent() {
             </div>
           </aside>
           {/* Mobile saved locations drawer toggle */}
-          <div className="md:hidden w-full mb-2">
+          <div className="md:hidden w-full mb-4">
             <div className="flex items-center justify-end">
-              <button className="px-3 py-2 rounded bg-sky-600 text-white text-sm" onClick={() => { setShowSavedDrawer(true); setTimeout(() => setDrawerOpen(true), 20) }}>
+              <button className="min-h-[44px] px-5 py-2.5 rounded-xl bg-sky-600 text-white text-sm font-medium shadow-sm" onClick={() => { setShowSavedDrawer(true); setTimeout(() => setDrawerOpen(true), 20) }}>
                 {t('saved_locations')}
               </button>
             </div>
           </div>
           {/* Geo permission banner */}
                 {showGeoPrompt && (
-            <div className="fixed top-16 left-1/2 -translate-x-1/2 z-40">
-              <div className="bg-white/90 backdrop-blur rounded-lg px-5 py-4 shadow-md flex items-center gap-5">
-                <div className="text-sm">{t('geo_prompt')}</div>
-                <div className="flex items-center gap-2">
-                  <button className="px-3 py-1 rounded bg-sky-600 text-white text-sm" onClick={handleAllowGeo}>{t('geo_allow')}</button>
-                  <button className="px-3 py-1 rounded bg-white border" onClick={handleDeclineGeo}>{t('geo_deny')}</button>
+            <div className="fixed top-20 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-2rem)] max-w-md">
+              <div className="bg-white/95 backdrop-blur rounded-xl px-6 py-5 shadow-lg flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-5">
+                <div className="text-sm leading-relaxed flex-1">{t('geo_prompt')}</div>
+                <div className="flex items-center gap-3 shrink-0">
+                  <button className="min-h-[44px] px-4 py-2.5 rounded-xl bg-sky-600 text-white text-sm font-medium" onClick={handleAllowGeo}>{t('geo_allow')}</button>
+                  <button className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-sm" onClick={handleDeclineGeo}>{t('geo_deny')}</button>
                 </div>
               </div>
             </div>
@@ -269,7 +269,7 @@ function AppContent() {
                   </div>
                 )}
                 {error && (
-                  <div className="py-4 bg-red-50 border border-red-100 text-red-700 rounded-md text-center">{t(error)}</div>
+                  <div className="py-4 px-5 sm:px-6 bg-red-50 border border-red-100 text-red-700 rounded-xl text-center text-sm">{t(error)}</div>
                 )}
                 {/* Only show weather/fact if a location is selected/searched */}
                 {weather ? (
@@ -282,32 +282,32 @@ function AppContent() {
                     </div>
                     <WeatherCard data={weather} unit={unit} />
                     <MapPreview lat={weather.lat} lon={weather.lon} name={weather.name} />
-                    <div className="mt-6 p-5 sm:p-6 rounded-xl bg-white/70 shadow text-slate-700">
-                      <div className="font-semibold mb-2">{t('fun_fact')}</div>
+                    <div className="section-gap-sm p-6 sm:p-8 rounded-xl bg-white/70 shadow text-slate-700">
+                      <div className="font-semibold mb-3">{t('fun_fact')}</div>
                       <div className="text-sm leading-relaxed">{funFact ? funFact : t('no_fact')}</div>
                     </div>
                     <IosNotificationHint show={typeof window !== 'undefined' && (typeof Notification === 'undefined' || Notification.permission === 'denied')} />
                     {/* Trivia panel */}
-                    <div className="mt-6 p-5 sm:p-6 rounded-xl bg-white/70 shadow text-slate-700">
-                        <div className="flex items-center justify-between mb-3">
+                    <div className="section-gap-sm p-6 sm:p-8 rounded-xl bg-white/70 shadow text-slate-700">
+                        <div className="flex items-center justify-between mb-4">
                           <div className="font-semibold">{t('trivia')}</div>
                           <div className="text-xs text-slate-500">{trivia && `${trivia.category} • ${trivia.difficulty}`}</div>
                         </div>
                       {trivia ? (
                         <div>
-                          <div className="text-sm mb-3 leading-relaxed">{trivia.question}</div>
+                          <div className="text-sm mb-4 leading-relaxed">{trivia.question}</div>
                           <div className="flex flex-col gap-3">
                             {trivia.choices.map((c, i) => (
-                              <button key={i} className={`text-left px-4 py-2.5 rounded-lg ${showAnswer && c === trivia.correct ? 'bg-emerald-100' : 'bg-white/60'}`} onClick={() => setShowAnswer(true)}>
+                              <button key={i} className={`min-h-[44px] text-left px-4 py-3 rounded-xl ${showAnswer && c === trivia.correct ? 'bg-emerald-100' : 'bg-white/60'}`} onClick={() => setShowAnswer(true)}>
                                 {c}
                               </button>
                             ))}
                           </div>
                           {showAnswer && (
-                            <div className="mt-3 text-sm text-slate-700">{t('answer')}: <strong>{trivia.correct}</strong></div>
+                            <div className="mt-4 text-sm text-slate-700">{t('answer')}: <strong>{trivia.correct}</strong></div>
                           )}
-                          <div className="mt-4 flex gap-3">
-                            <button className="px-4 py-2 rounded-lg bg-sky-600 text-white text-sm" onClick={async () => {
+                          <div className="mt-5 flex flex-wrap gap-3">
+                            <button className="min-h-[44px] px-5 py-2.5 rounded-xl bg-sky-600 text-white text-sm font-medium" onClick={async () => {
                               setShowAnswer(false)
                               if (triviaQueue && triviaQueue.length > 0) {
                                 const next = triviaQueue[0]
@@ -328,7 +328,7 @@ function AppContent() {
                           </div>
                         </div>
                       ) : (
-                        <div className="text-sm">{t('no_trivia')}. <button className="underline" onClick={async () => { const q = await fetchTrivia(); if (q) setTrivia(q); }}>{t('load_trivia')}</button></div>
+                        <div className="text-sm leading-relaxed">{t('no_trivia')}. <button className="mt-2 inline-block min-h-[44px] px-4 py-2 rounded-xl bg-sky-100 text-sky-700 font-medium hover:bg-sky-200 transition" onClick={async () => { const q = await fetchTrivia(); if (q) setTrivia(q); }}>{t('load_trivia')}</button></div>
                       )}
                     </div>
                   </div>
@@ -342,12 +342,12 @@ function AppContent() {
                   </div>
                 )}
                 {hourly && weather && (
-                  <div className="mt-8">
+                  <div className="section-gap">
                     <HourlyForecast data={hourly} unit={unit} />
                   </div>
                 )}
                 {daily && weather && (
-                  <div className="mt-8">
+                  <div className="section-gap">
                     <DailyForecast data={daily} unit={unit} />
                   </div>
                 )}
@@ -381,7 +381,7 @@ function AppContent() {
         )}
         </div>
         </Container>
-        <footer className="footer-blur fixed bottom-0 left-0 w-full z-10 py-3 px-6 text-center text-xs text-slate-500">
+        <footer className="footer-blur fixed bottom-0 left-0 w-full z-10 text-center text-xs text-slate-500">
           &copy; {new Date().getFullYear()} {t('title')}
         </footer>
       </div>

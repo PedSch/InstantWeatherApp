@@ -9,16 +9,20 @@
   --card: rgba(255,255,255,0.7);
   --muted: #6b7280;
   --glass: rgba(255,255,255,0.6);
-  /* Design tokens (CSS variables) for spacing and typography */
+  /* Design tokens — production spacing scale */
   --space-xs: 6px;
   --space-sm: 12px;
   --space-md: 16px;
   --space-lg: 24px;
   --space-xl: 32px;
   --space-2xl: 40px;
+  --space-3xl: 48px;
+  --space-4xl: 64px;
 
   --radius-sm: 8px;
   --radius-md: 12px;
+  --radius-lg: 16px;
+  --touch-min: 44px; /* min touch target (accessibility) */
 
   --font-base: 16px;
   --font-lg: 20px;
@@ -41,23 +45,34 @@ body {
 
 /* Main content: padding so fixed header/footer don't overlap; safe-area-aware */
 .main-content-padding {
-  padding-top: max(5rem, env(safe-area-inset-top, 0px));
-  padding-bottom: max(5rem, env(safe-area-inset-bottom, 0px));
-  padding-left: var(--space-md);
-  padding-right: var(--space-md);
+  padding-top: max(6rem, calc(env(safe-area-inset-top, 0px) + 2rem));
+  padding-bottom: max(6rem, calc(env(safe-area-inset-bottom, 0px) + 2rem));
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
 }
 @media (min-width: 640px) {
-  .main-content-padding {
-    padding-left: var(--space-lg);
-    padding-right: var(--space-lg);
-  }
-}
-@media (min-width: 1024px) {
   .main-content-padding {
     padding-left: var(--space-xl);
     padding-right: var(--space-xl);
   }
 }
+@media (min-width: 1024px) {
+  .main-content-padding {
+    padding-left: var(--space-2xl);
+    padding-right: var(--space-2xl);
+  }
+}
+
+/* Section gaps — use for major content blocks */
+.section-gap { margin-top: var(--space-2xl); }
+.section-gap-sm { margin-top: var(--space-xl); }
+@media (min-width: 640px) {
+  .section-gap { margin-top: var(--space-3xl); }
+  .section-gap-sm { margin-top: var(--space-2xl); }
+}
+
+/* Touch targets — min height for buttons/links (accessibility) */
+.touch-target { min-height: var(--touch-min); }
 
 /* Gentle, modern background gradient */
 body {
@@ -78,11 +93,16 @@ body {
   box-shadow: 0 8px 30px rgba(2,6,23,0.08);
 }
 .card.card-spacious {
-  padding: var(--space-lg);
+  padding: var(--space-xl);
 }
 @media (min-width: 640px) {
   .card.card-spacious {
-    padding: var(--space-xl);
+    padding: var(--space-2xl);
+  }
+}
+@media (min-width: 1024px) {
+  .card.card-spacious {
+    padding: var(--space-3xl);
   }
 }
 
@@ -110,12 +130,10 @@ body {
   transition: transform 320ms cubic-bezier(.22,.9,.3,1);
   box-shadow: -8px 0 28px rgba(2,6,23,0.14);
   width: min(92vw, 360px);
-  padding: var(--space-lg) var(--space-md);
+  padding: var(--space-xl) var(--space-lg);
 }
-@media (min-width: 640px) {
-  .drawer-panel {
-    padding: var(--space-xl) var(--space-lg);
-  }
+.drawer-panel .drawer-inner {
+  padding-top: var(--space-sm);
 }
 .drawer-panel.open {
   transform: translateX(0) scale(1);
@@ -130,16 +148,32 @@ body {
   background-color: rgba(0,0,0,0.4);
 }
 
-/* Header dimming when scrolling to reduce overlap */
+/* Header — consistent padding */
 .header-blur {
   transition: background-color 240ms ease, box-shadow 240ms ease, opacity 240ms ease;
   background: rgba(255,255,255,0.4);
   backdrop-filter: blur(6px);
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+}
+@media (min-width: 640px) {
+  .header-blur {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+  }
 }
 .header-blur.header-dim {
   background: rgba(255,255,255,0.85);
   box-shadow: 0 6px 20px rgba(2,6,23,0.08);
   opacity: 0.98;
+}
+
+/* Footer — consistent padding + safe-area */
+.footer-blur {
+  padding-top: var(--space-lg);
+  padding-bottom: max(var(--space-lg), env(safe-area-inset-bottom, 0px));
+  padding-left: var(--space-xl);
+  padding-right: var(--space-xl);
 }
 
 /* Drawer inner content polish: scale + fade+slide */

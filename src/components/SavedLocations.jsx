@@ -20,18 +20,18 @@ export default function SavedLocations({ items = [], onSelect = () => {}, onRemo
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-4">
         <div className="text-sm text-slate-500">{title}</div>
       </div>
       {(!items || items.length === 0) ? (
-        <div className="p-5 rounded-lg bg-white/80 text-slate-600 shadow-sm">
-          <div className="text-sm mb-1">{t('no_saved_locations')}</div>
-          <div className="text-xs text-slate-400">{t('no_saved_hint')}</div>
+        <div className="p-6 rounded-xl bg-white/80 text-slate-600 shadow-sm">
+          <div className="text-sm mb-2 leading-relaxed">{t('no_saved_locations')}</div>
+          <div className="text-xs text-slate-400 leading-relaxed">{t('no_saved_hint')}</div>
         </div>
       ) : (
         <div className="flex flex-col gap-3">
           {items.map((it, i) => (
-            <div key={i} className="saved-item flex flex-col sm:flex-row sm:items-center gap-3 bg-white/80 rounded-lg px-4 py-3 shadow-sm">
+            <div key={i} className="saved-item flex flex-col sm:flex-row sm:items-center gap-3 bg-white/80 rounded-xl px-4 py-4 shadow-sm min-h-[72px]">
               <div className="flex items-center gap-3 w-full sm:flex-1">
                 <div className="w-10 h-10 flex items-center justify-center bg-slate-100 rounded-md flex-shrink-0">
                   {getIcon(it.weathercode, it.is_day ? 1 : 0, 'w-6 h-6')}
@@ -41,9 +41,9 @@ export default function SavedLocations({ items = [], onSelect = () => {}, onRemo
                   <div className="text-xs text-slate-400">{it.temp ? `${Math.round(it.temp)}°` : ''}</div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 mt-2 sm:mt-0">
-                <button className="px-3 py-1 text-sm rounded bg-white/60" onClick={() => onSelect(it)}>{t('open')}</button>
-                <button title={removeLabel} className="text-xs text-red-500" onClick={() => onRemove(it.name)}>✕</button>
+              <div className="flex items-center gap-2 mt-2 sm:mt-0 shrink-0">
+                <button className="min-h-[40px] px-4 py-2 text-sm rounded-xl bg-white/60 font-medium" onClick={() => onSelect(it)}>{t('open')}</button>
+                <button title={removeLabel} className="min-h-[40px] min-w-[40px] flex items-center justify-center text-sm text-red-500 rounded-lg hover:bg-red-50" onClick={() => onRemove(it.name)}>✕</button>
               </div>
             </div>
           ))}

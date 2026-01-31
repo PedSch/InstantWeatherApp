@@ -28,12 +28,12 @@ export default function SearchBar({ onSearch, placeholder, buttonText }) {
   return (
     <form onSubmit={submit} className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
       <div className="relative flex-1">
-        <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <svg className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
           <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           <circle cx="11" cy="11" r="6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
         <input
-          className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-300 transition"
+          className="w-full min-h-[48px] pl-11 pr-5 py-3.5 rounded-xl border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-sky-300 transition text-base"
           placeholder={placeholder || t('search_placeholder')}
           value={value}
           onChange={(e) => setValue(e.target.value)}
@@ -42,7 +42,7 @@ export default function SearchBar({ onSearch, placeholder, buttonText }) {
       </div>
       <Button
         type="submit"
-        className="px-4 py-2 bg-gradient-to-r from-sky-500 to-indigo-600 text-white rounded-lg shadow hover:from-sky-600 hover:to-indigo-700 transition-transform transform hover:-translate-y-0.5 active:translate-y-0 w-full sm:w-auto"
+        className="min-h-[48px] px-6 py-3 bg-gradient-to-r from-sky-500 to-indigo-600 text-white rounded-xl shadow-sm hover:from-sky-600 hover:to-indigo-700 transition-all w-full sm:w-auto font-medium"
       >
         {buttonText || t('search_button')}
       </Button>

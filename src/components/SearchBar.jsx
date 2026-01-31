@@ -26,7 +26,7 @@ export default function SearchBar({ onSearch, placeholder, buttonText }) {
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
+    <form onSubmit={submit} className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
       <div className="relative flex-1">
         <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
           <path d="M21 21l-4.35-4.35" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

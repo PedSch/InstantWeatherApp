@@ -53,7 +53,7 @@ export default function MapPreview({ lat, lon, name }) {
   if (!lat || !lon) return null
 
   return (
-    <div ref={containerRef} className="mt-4 rounded-lg overflow-hidden shadow">
+    <div ref={containerRef} className="mt-6 rounded-xl overflow-hidden shadow">
       {/* use loading=lazy and provide srcset for DPR-aware images */}
       <img
         src={src ? src.src1 : ''}

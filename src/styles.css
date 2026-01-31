@@ -14,6 +14,8 @@
   --space-sm: 12px;
   --space-md: 16px;
   --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 40px;
 
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -41,6 +43,20 @@ body {
 .main-content-padding {
   padding-top: max(5rem, env(safe-area-inset-top, 0px));
   padding-bottom: max(5rem, env(safe-area-inset-bottom, 0px));
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+}
+@media (min-width: 640px) {
+  .main-content-padding {
+    padding-left: var(--space-lg);
+    padding-right: var(--space-lg);
+  }
+}
+@media (min-width: 1024px) {
+  .main-content-padding {
+    padding-left: var(--space-xl);
+    padding-right: var(--space-xl);
+  }
 }
 
 /* Gentle, modern background gradient */
@@ -60,6 +76,14 @@ body {
   border-radius: var(--radius-md);
   padding: var(--space-md);
   box-shadow: 0 8px 30px rgba(2,6,23,0.08);
+}
+.card.card-spacious {
+  padding: var(--space-lg);
+}
+@media (min-width: 640px) {
+  .card.card-spacious {
+    padding: var(--space-xl);
+  }
 }
 
 .muted { color: var(--muted) }
@@ -85,8 +109,13 @@ body {
   transform: translateX(100%) scale(.995);
   transition: transform 320ms cubic-bezier(.22,.9,.3,1);
   box-shadow: -8px 0 28px rgba(2,6,23,0.14);
-  /* Use viewport-relative width to fit on small phones */
   width: min(92vw, 360px);
+  padding: var(--space-lg) var(--space-md);
+}
+@media (min-width: 640px) {
+  .drawer-panel {
+    padding: var(--space-xl) var(--space-lg);
+  }
 }
 .drawer-panel.open {
   transform: translateX(0) scale(1);
@@ -136,12 +165,12 @@ body {
 /* Small phone tweaks (e.g., iPhone SE) */
 @media (max-width: 360px) {
   .card { padding: 10px; border-radius: 10px }
+  .card.card-spacious { padding: 12px }
   .text-3xl { font-size: 1.25rem }
   .text-2xl { font-size: 1.05rem }
   .text-lg { font-size: 0.95rem }
   header.header-blur { padding-left: 8px; padding-right: 8px }
   .footer-blur { padding-left: 8px; padding-right: 8px; font-size: 11px }
-  .card .p-6 { padding: 12px }
 }
 
 /* Ultra-small phones (<=340px): compress header control gaps */

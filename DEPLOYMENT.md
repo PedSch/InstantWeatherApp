@@ -34,14 +34,33 @@ Builds with production config: set env vars in Vercel/CI or use a local `.env.pr
 
 ### Vercel (Recommended)
 
-1. Install Vercel CLI:
+**Option A — Connect Git (recommended)**
+
+1. Go to [vercel.com](https://vercel.com) and sign in.
+2. **Add New Project** → Import your Git repository (GitHub/GitLab/Bitbucket).
+3. Configure the project:
+   - **Framework Preset:** Vite (or "Other" if Vite is not listed).
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+   - **Install Command:** leave default (`npm install` or `npm ci`).
+4. Add environment variables (see below), then click **Deploy**.
+5. After the first successful deploy, your app will be at `https://<project-name>.vercel.app`. If you see **404 / DEPLOYMENT_NOT_FOUND**, the build may have failed or no deployment exists yet — check the **Deployments** tab and the build logs.
+
+**Option B — Vercel CLI**
+
+1. Install and log in:
 ```bash
 npm i -g vercel
+vercel login
 ```
 
-2. Deploy:
+2. From the project root, deploy:
 ```bash
 vercel
+```
+Follow the prompts to link the project. For production:
+```bash
+vercel --prod
 ```
 
 3. Set environment variables in Vercel dashboard:

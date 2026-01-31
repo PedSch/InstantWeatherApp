@@ -46,17 +46,19 @@ try {
 	// ignore
 }
 
-// Vercel BotID: invisible bot protection for API requests
-try {
-	const { initBotId } = await import('botid/client/core');
-	initBotId({
-		protect: [
-			{ path: '/api/weather', method: 'GET' },
-		],
-	});
-} catch (err) {
-	// ignore if botid not available
-}
+// Vercel BotID: invisible bot protection for API requests (no top-level await for build target)
+;(async function initBotIdOnce() {
+	try {
+		const { initBotId } = await import('botid/client/core');
+		initBotId({
+			protect: [
+				{ path: '/api/weather', method: 'GET' },
+			],
+		});
+	} catch (err) {
+		// ignore if botid not available
+	}
+})();
 
 // Register Service Worker in production contexts
 if (import.meta.env.PROD) {

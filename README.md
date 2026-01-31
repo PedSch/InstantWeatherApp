@@ -1,125 +1,161 @@
-# InstantWeatherApp
-A clean, minimal web app that shows current weather for any city using a free weather API. Simple UI, instant results, and responsive design. Impressive but fast to build.
+# ACTIVO Weather (codewithDro)
 
-This workspace now contains a minimal Vite + React + Tailwind scaffold created by Pedro Schmidt (codewithdro).
+A clean, responsive weather app: search any city, use your location, save favorites, and see current + hourly + 7-day forecast. Built with Vite, React, and Tailwind. No API key required for weather (Open-Meteo).
 
-Quick start (Open-Meteo, no API key required)
+**Live app:** [https://weatherapp-rouge-one-79.vercel.app/](https://weatherapp-rouge-one-79.vercel.app/)
 
-1. Install dependencies:
+---
+
+## Features
+
+- **Search by city** — Geocode + current weather, hourly (24h), and 7-day forecast
+- **Use your location** — Optional geolocation for “Your Location” weather
+- **Saved locations** — Save favorites in the sidebar (desktop) or drawer (mobile); persisted in `localStorage`
+- **Units** — Toggle °C / °F
+- **i18n** — English, Spanish, Catalan, Portuguese
+- **Fun fact & trivia** — Location-based fun fact and optional trivia
+- **Share & notify** — Share current weather; request notification permission and schedule a weather notification
+- **PWA** — Installable; basic offline support via service worker
+- **Mobile-first** — Fixed header/footer with safe-area padding; keyboard-friendly drawer
+
+---
+
+## Tech stack
+
+| Layer        | Choice                    |
+|-------------|---------------------------|
+| Build       | [Vite](https://vitejs.dev/) |
+| UI          | [React](https://react.dev/) 18 |
+| Styling     | [Tailwind CSS](https://tailwindcss.com/) |
+| Weather API | [Open-Meteo](https://open-meteo.com/) (no key) |
+| Deploy      | [Vercel](https://vercel.com/) (static + optional `/api` proxy) |
+
+---
+
+## Prerequisites
+
+- **Node.js** 18+
+- (Optional) npm 9+ or equivalent
+
+---
+
+## Quick start
+
 ```bash
-cd /workspaces/InstantWeatherApp
+# Clone and enter the project
+cd InstantWeatherApp
+
+# Install dependencies
 npm install
+
+# Run dev server
+npm run dev
 ```
 
-2. Run dev server:
-```bash
-npm run dev -- --host
-```
+Open [http://localhost:5173](http://localhost:5173).
 
-3. Open the app in your browser at `http://localhost:5173`
+**Production build:**
 
-Build for production:
 ```bash
 npm run build
-npm run preview -- --host
+npm run preview
 ```
 
+Preview runs at [http://localhost:5173](http://localhost:5173) by default.
 
-Notes
-- This project uses Open-Meteo (no API key required) for quick demos. 
-Production & proxy notes
-- The project includes a serverless proxy at `api/weather.js` that can forward requests to either Open-Meteo (no key) or OpenWeatherMap (server-side key). The proxy supports:
-	- Caching (in-memory per instance) and sets `Cache-Control` headers for edge caching.
-	- Configurable TTL via `PROXY_CACHE_TTL` (seconds).
-	- Optional rate limiting via `PROXY_RATE_LIMIT` and `PROXY_RATE_WINDOW` (seconds).
-	- Optional proxy API key: set `PROXY_API_KEY` to require callers to provide `x-proxy-key` header.
-	- Optional allowed origins: set `PROXY_ALLOWED_ORIGINS` to a comma-separated list of allowed origins (the function will check the `Origin` or `Referer` header).
+---
 
-Environment variables (recommended for production on Vercel)
-- `OPENWEATHER_KEY` — (server-side) Your OpenWeatherMap API key. Set this in Vercel Dashboard as an Environment Variable.
-- `PROXY_CACHE_TTL` — Cache TTL in seconds (default: `60`). Controls `s-maxage` and `max-age` headers and in-memory TTL.
-- `PROXY_RATE_LIMIT` — Requests per IP per window (default: `60`).
-- `PROXY_RATE_WINDOW` — Window size (seconds) for rate limiting (default: `60`).
-- `PROXY_API_KEY` — Optional API key for callers to use (required header: `x-proxy-key`).
-- `PROXY_ALLOWED_ORIGINS` — Optional comma-separated list, e.g. `https://yourdomain.com,https://app.example.com`.
+## Scripts
 
-Security & CI
-- The repository contains a GitHub Action that runs `gitleaks` on PRs and pushes to `main` to detect secrets. Keep this enabled and add additional scanning if needed.
+| Command           | Description                    |
+|-------------------|--------------------------------|
+| `npm run dev`     | Start Vite dev server          |
+| `npm run build`   | Production build → `dist/`    |
+| `npm run build:staging`   | Build with staging env |
+| `npm run build:production` | Build with production env |
+| `npm run preview` | Serve `dist/` (default port 5173) |
+| `npm run serve`   | Serve `dist/` on port 8080 (e.g. for Lighthouse) |
+| `npm run lint`    | Run ESLint                     |
+| `npm test`        | Run Vitest (watch)             |
+| `npm run test:ci` | Run Vitest once (CI)           |
+| `npm run lighthouse` | Run Lighthouse against local serve (port 8080) |
 
-Using Upstash or Redis for shared caching (optional)
-- The proxy uses an in-memory cache per serverless instance (cold-start based). For production at scale, you can replace the in-memory cache with Upstash Redis or another managed store so cached responses are shared across instances. Example approach:
-	1. Create an Upstash Redis database and set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` in Vercel env.
-	2. In `api/weather.js`, detect those env vars and use Upstash REST API to GET/SET cached responses with expiry instead of the in-memory `CACHE` Map.
+---
 
-Helpful commands
-- Local dev (no keys needed):
-```bash
-npm install
-npm run dev -- --host
+## Environment variables
+
+Do **not** commit `.env`, `.env.local`, `.env.production`, or `.env.staging`. Use the example files as templates:
+
+- **Development:** copy `.env.example` → `.env.local`
+- **Staging/Production:** copy `.env.staging.example` / `.env.production.example` → set in CI or Vercel
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `VITE_SENTRY_DSN` | No | Sentry error tracking DSN |
+| `VITE_GA4_ID` | No | Google Analytics 4 Measurement ID |
+| `VITE_ENV` | No | `development` / `staging` / `production` |
+| `VITE_APP_VERSION` | No | App version (e.g. for Sentry) |
+| `VITE_MAP_PROVIDER_BASE` | No | Override map tile URL (default: Yandex static maps) |
+| `VITE_IMAGE_CDN_BASE` | No | Optional image CDN base URL |
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for full deployment and env details.
+
+---
+
+## Project structure
+
+```
+InstantWeatherApp/
+├── api/                    # Vercel serverless (optional weather proxy)
+│   └── weather.js
+├── public/                 # Static assets, manifest, service worker
+├── src/
+│   ├── components/         # React UI (SearchBar, WeatherCard, SavedLocations, etc.)
+│   ├── hooks/              # useWeather, useSavedLocations
+│   ├── services/           # weatherService (geocode, forecast, normalize)
+│   ├── theme/              # ThemeProvider, useTheme
+│   ├── App.jsx             # Main app composition
+│   ├── i18n.jsx            # Translations (en, es, ca, pt)
+│   ├── index.js            # Entry; Sentry, GA4, SW, error overlay (DEV only)
+│   └── styles.css          # Tailwind + custom (safe-area, drawer, etc.)
+├── .env.example
+├── vercel.json             # Vite build + SPA rewrites
+├── vite.config.js
+├── tailwind.config.js
+└── package.json
 ```
 
-- Test proxy locally with a server-side key set (do NOT commit `.env`):
-```bash
-export OPENWEATHER_KEY=your_key_here
-export PROXY_CACHE_TTL=60
-npm run dev
-# then try: http://localhost:5173/api/weather?provider=open-meteo&latitude=51.5&longitude=-0.12&hourly=temperature_2m
-```
+---
 
-Deploying on Vercel
-- Set `OPENWEATHER_KEY` and any `PROXY_*` env vars in the Vercel UI. Do not use `VITE_`-prefixed env vars for server-side secrets.
-- Vercel will run `npm run build` and deploy the `dist` static output and `/api` serverless functions.
+## Deployment
 
-Continuous Integration
-- A pull-request workflow (`.github/workflows/pr-build.yml`) has been added to run `npm ci` and `npm run build` on PRs to prevent accidental broken builds.
+- **Vercel (recommended):** Connect the Git repo in the [Vercel dashboard](https://vercel.com/dashboard). Set **Framework Preset** to **Vite**, **Build Command** to `npm run build`, **Output Directory** to `dist`. Add env vars as needed. See [DEPLOYMENT.md](./DEPLOYMENT.md) and [VERCEL_DEPLOY.md](./VERCEL_DEPLOY.md) for details and 404 troubleshooting.
+- **CI:** `.github/workflows/pr-build.yml` runs `npm ci`, `npm run lint`, `npm run test:ci`, and `npm run build` on PRs to `main`. `.github/workflows/lighthouse.yml` runs a Lighthouse audit after build.
 
-Crash reporting & Analytics
-- Sentry: A lightweight initializer is provided at `src/initSentry.js`. To enable Sentry in the browser set `VITE_SENTRY_DSN` in your environment (Vercel: set in Project > Settings > Environment Variables). Install the SDK in your project with:
+---
 
-```bash
-npm install @sentry/react
-```
+## Optional: serverless proxy
 
-Then Sentry will be dynamically imported at runtime when `VITE_SENTRY_DSN` is present.
+The repo includes `api/weather.js` for Vercel (or similar) serverless. It can forward requests to Open-Meteo (no key) or OpenWeatherMap (server-side key). Supports caching, rate limiting, and optional `PROXY_API_KEY` / `PROXY_ALLOWED_ORIGINS`. The **frontend currently calls Open-Meteo directly**; you can switch it to use `/api/weather` and set server-side env vars if you prefer. See `api/weather.js` and [DEPLOYMENT.md](./DEPLOYMENT.md).
 
-- Firebase Crashlytics: Crashlytics is a native SDK (iOS/Android) and is best used for Capacitor builds. Add the native SDK(s) in Xcode/Android Studio and follow Firebase docs for setup. The web SDK is focused on analytics rather than crash reporting.
+---
 
-- Vercel Analytics: Enable from the Vercel dashboard for lightweight server-side analytics (requires Vercel Pro for historical retention). You can also add client-side analytics (Plausible, Google Analytics, or Segment) conditionally in the app.
+## PWA & native
 
-PWA (Installable + Offline)
-- Files added: `public/manifest.json`, `public/service-worker.js`, `public/icons/*` and a small service worker registrar in `src/serviceWorkerRegistration.js`.
-- The service worker is minimal: it precaches core files, does network-first for `/api/` requests and cache-first for static assets. It enables basic offline resilience and makes the app installable on supported browsers (Safari will use the manifest and "Add to Home Screen" flow).
-- Note: Safari on iOS has special behavior — it doesn't show an "install" prompt and requires some additional meta tags and icons in your app package. Test on devices.
+- **PWA:** `public/manifest.json`, `public/service-worker.js`, and `src/serviceWorkerRegistration.js` provide installability and basic offline behavior. See [DEPLOYMENT.md](./DEPLOYMENT.md).
+- **Capacitor:** The app can be wrapped with [Capacitor](https://capacitorjs.com/) for iOS/Android. `src/native.js` and `@capacitor/local-notifications` support local notifications in the native build. See [DEPLOYMENT.md](./DEPLOYMENT.md) for store packaging notes.
 
-- An offline fallback page `public/offline.html` was added and is used by the service worker when navigation fails.
+---
 
-Native / Capacitor note — Local notifications
-- A small native helper is scaffolded at `src/native.js` which tries to use Capacitor's Local Notifications plugin when running in a native context and falls back to the Web Notifications API in the browser.
-- To enable native local notifications in your Capacitor build:
+## Accessibility & performance
 
-```bash
-# install the Capacitor plugin (run locally, not in the container if you're building natively)
-npm install @capacitor/local-notifications
-npx cap sync
-```
+- Keyboard-accessible drawer (focus trap, Escape to close).
+- ARIA where needed; semantic HTML and `lang` for i18n.
+- Safe-area padding for notched devices.
+- Run `npm run build` and audit with Lighthouse (e.g. after `npm run serve` on port 8080, then `npm run lighthouse` if configured).
 
-- iOS: add the `UNUserNotificationCenter` usage and enable push/local notification capabilities in Xcode. Request permissions at runtime before scheduling notifications. The helper `scheduleLocalNotification` will dynamically use the native plugin when available.
+---
 
-App Store packaging guidance
-- Apple can reject apps that are simple web views. When using Capacitor, ensure the native app provides value beyond the website:
-	- Use native permissions and purpose strings in `Info.plist` (e.g., `NSLocationWhenInUseUsageDescription`) and show rationales in the UI.
-	- Add native navigation, offline handling, and at least one native feature (push notifications, widgets, background fetch, or deep links) if suitable.
-	- Provide proper app icons, launch screens, and screenshots. Localize metadata where possible.
+## License
 
-Accessibility & Performance checklist
-- Accessibility:
-	- Ensure all interactive elements are reachable by keyboard and have clear focus states.
-	- Add ARIA labels where semantic HTML doesn't express intent (icons, dynamic regions).
-	- Ensure color contrast meets WCAG AA (4.5:1 for normal text).
-	- Use `lang` attribute on `html` and update on locale switches (`<html lang="en">`).
-
-- Performance:
-	- Run `npm run build` and test with Lighthouse (in Chrome DevTools) for performance, accessibility, best-practices and SEO.
-	- Enable gzip/brotli on the CDN or hosting provider (Vercel handles this automatically).
-	- Keep vendor bundles small; dynamically import large libs like Sentry only when enabled.
-
+Private / project use. See repository settings for details.

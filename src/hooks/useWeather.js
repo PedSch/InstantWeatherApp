@@ -33,13 +33,13 @@ export function useWeather() {
       setDaily(d)
     } catch (err) {
       const msg = err && err.message ? err.message : ''
-      setError(msg.includes('City not found') ? (onErrorMsg?.('not_found') ?? 'City not found') : (onErrorMsg?.('error_fetch') ?? 'Failed to fetch weather'))
+      setError(msg.includes('City not found') ? 'not_found' : 'error_fetch')
     } finally {
       setLoading(false)
     }
   }, [])
 
-  const fetchByCoordinates = useCallback(async (lat, lon, displayName = 'Your Location', country = '', onErrorMsg) => {
+  const fetchByCoordinates = useCallback(async (lat, lon, displayName = 'Your Location', country = '') => {
     setLoading(true)
     setError(null)
     setWeather(null)

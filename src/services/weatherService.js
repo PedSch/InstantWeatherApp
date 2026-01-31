@@ -105,7 +105,9 @@ export function normalizeForecast(api, displayName, country) {
  * @returns {Promise<{ weather, hourly, daily }>}
  */
 export async function searchByCity(city) {
-  const geo = await geocodeCity(city)
+  const name = typeof city === 'string' ? city.trim() : ''
+  if (!name) throw new Error('City not found')
+  const geo = await geocodeCity(name)
   const api = await fetchForecast(geo.latitude, geo.longitude)
   return normalizeForecast(api, geo.name, geo.country)
 }
